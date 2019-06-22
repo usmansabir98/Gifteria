@@ -18,7 +18,7 @@ class AddProductcategoryEventcategoryUserBrandColumnsToProductsTable extends Mig
             $table->integer('product_category_id')->unsigned();
             $table->integer('brand_id')->unsigned();
             $table->integer('user_id')->unsigned();
-            $table->integer('event_category_id')->unsigned();
+          
             //$table->foreign('category_id')
            // ->references('id')
             //->on('product_categories');
@@ -38,7 +38,7 @@ class AddProductcategoryEventcategoryUserBrandColumnsToProductsTable extends Mig
             $table->dropColumn('product_category_id');
             $table->dropColumn('brand_id')->unsigned();
             $table->dropColumn('user_id')->unsigned();
-            $table->dropColumn('event_category_id')->unsigned();
+          
         });
     }
 }

@@ -17,18 +17,18 @@ class Product extends Model
         return $this->belongsTo(ProductCategory::class);
     }
 
-    public function brands(){
+    public function brand(){
         return $this->belongsTo(Brand::class);
     }
-    public function users(){
+    public function user(){
         return $this->belongsTo(User::class);
     }
 
     
     
-    public function eventCategory()
+    public function eventCategories()
     {
-        return $this->belongsToMany(EventCategory::class,'product_eventcategory', 'product_id','eventcategory_id');
+        return $this->belongsToMany(EventCategory::class,'product_event_category', 'product_id','eventcategory_id');
         //return $this->belongsToMany(Privileges::class);
     }
 

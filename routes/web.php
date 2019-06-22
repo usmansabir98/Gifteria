@@ -15,4 +15,18 @@
 //     return view('welcome');
 // });
 
-Route::view('/{path?}', 'app');
+//Route::view('/{path?}', 'app');
+
+ Route::get('/', 'PagesController@index');
+
+ Route::resource('brands', 'BrandsController');
+ Route::resource('eventcategories', 'EventCategoriesController');
+ Route::resource('productcategories', 'ProductCategoriesController');
+ Route::resource('products', 'ProductController');
+
+// Route::get('/inventory', 'PagesController@index');
+
+//products
+//category
+//brand
+//order

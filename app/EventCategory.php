@@ -16,7 +16,7 @@ class EventCategory extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class,'product_eventcategory', 'product_id','eventcategory_id');
+        return $this->belongsToMany(Product::class,'product_event_category', 'product_id','eventcategory_id');
         //return $this->belongsToMany(Privileges::class);
     }
 }
