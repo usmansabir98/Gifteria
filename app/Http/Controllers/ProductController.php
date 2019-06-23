@@ -52,37 +52,43 @@ class ProductController extends Controller
     {
         //
         
-        $this->validate($request, [
-            'name' => 'required',
-            'description' => 'required',
-            'productcategory' => 'required',
-            //'eventcategory' => 'required',
-            'brand' => 'required',
-            
-            
-        ]);
+       //
         
-        // Create 
-        $product = Product::find($id);
-        $product->name = $request->input('name');
-        //$product->description = $request->input('description');
-        $product->description = 'k;f';
-        $product->brand_id = $request->input('brand');
-        $product->product_category_id = $request->input('productcategory');
-        //$product->eventCategories = $request->input('eventcategory');
-        $product->user_id = 1; 
-
+       $this->validate($request, [
+        'name' => 'required',
+        'description' => 'required',
+        'productcategory' => 'required',
+        //'eventcategory' => 'required',
+        'brand' => 'required',
         
-        $product->save();
-
-        // $product_event_category = new ProductEventCategory;
-
-        // $product_event_category->product_id= $product->id;
-        // $product_event_category->eventcategory_id= $request->input('eventcategory');
-
         
+    ]);
+    
+ 
+    $product = new Product;
+    $product->name = $request->input('name');
+  
+   $product->description = $request->input('description');
+    $product->brand_id = $request->input('brand');
+    $product->product_category_id = $request->input('productcategory');
+    
+    $product->user_id = 1; 
+
+    
+    $product->save();
+
+    
+       $eventcategories= $request->input('event_category');
+
+            $event_category = EventCategory::find($eventcategories);
+
+            $product->eventCategories()->attach($event_category);
+
+
+   
 
         return redirect('/products')->with('success', 'Product Created');
+         //return response ()->json($eventcategories);
     }
 
     /**
@@ -133,7 +139,7 @@ class ProductController extends Controller
         
         $this->validate($request, [
             'name' => 'required',
-            'description' => 'required',
+            //'description' => 'required',
             'productcategory' => 'required',
             //'eventcategory' => 'required',
             'brand' => 'required',
@@ -141,27 +147,38 @@ class ProductController extends Controller
             
         ]);
         
-        // Create 
-        $product = new Product;
+     
+        $product = Product::find($id);
         $product->name = $request->input('name');
-        //$product->description = $request->input('description');
-        $product->description = $request->input('description');
+       
+         $product->description = $request->input('description');
         $product->brand_id = $request->input('brand');
         $product->product_category_id = $request->input('productcategory');
-        //$product->eventCategories = $request->input('eventcategory');
         $product->user_id = 1; 
 
         
         $product->save();
+         
+        //get all event categories of a product to remove records in the middle table
+        $event_categories = $product->eventCategories;
 
-        // $product_event_category = new ProductEventCategory;
+         foreach($event_categories as $eventcategory)
+       {
+        $event_category= EventCategory::find($eventcategory);
+        $product->eventCategories()->detach($event_category);
+       }
+       //adding new records in middle table
+        $eventcategories= $request->input('event_category');
+ 
+         $event_category = EventCategory::find($eventcategories);
+ 
+         $product->eventCategories()->attach($event_category);
 
-        // $product_event_category->product_id= $product->id;
-        // $product_event_category->eventcategory_id= $request->input('eventcategory');
 
-        
+       
 
-        return redirect('/products')->with('success', 'Product Created');
+       return redirect('/products')->with('success', 'Product Updated');
+      // return response()->json($request->input('eventcategory'));
     }
 
     /**
@@ -174,7 +191,17 @@ class ProductController extends Controller
     {
         //
         $product = Product::find($id);
-        
+       
+        //get all event categories of a product to remove records in the middle table
+        $event_categories = $product->eventCategories;
+
+         foreach($event_categories as $eventcategory)
+       {
+        $event_category= EventCategory::find($eventcategory);
+        $product->eventCategories()->detach($event_category);
+       }
+
+       //del the product
         $product->delete();
         return redirect('/products')->with('success', 'Product Removed');
     }

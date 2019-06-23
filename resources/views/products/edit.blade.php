@@ -28,10 +28,12 @@
         {{Form::label('eventcategory', 'Eventcategory')}}
            
         @foreach ($event_categories as $event_category)
-        <input type="checkbox"  value="{{$event_category->id }}" /> {{$event_category->name }}
+        <input type="checkbox" name="event_category[]"  value="{{$event_category->id }}" /> {{$event_category->name }}
         @endforeach
     </select>              
     </div>
+    
+    
     <div class="form-group">
         {{Form::label('brand', 'Brand')}}
         <select name="brand" id="brand">
