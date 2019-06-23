@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 use App\Product;
+use App\ProductImage;
 use App\Brand;
 use App\EventCategory;
 use App\ProductCategory;
+use Illuminate\Support\Facades\Storage;
 
 
 use Illuminate\Http\Request;
@@ -18,12 +20,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
-        $products = Product::orderBy('name')->paginate(10);
-        
-
-         //return response ()->json($products);
-         return view('products.index')->with('products',$products);
+        $products = Product::orderBy('name')->paginate(20);
+        // 
+        return view('products.index')->with('products',$products);
+    
     }
 
     /**
@@ -60,35 +60,59 @@ class ProductController extends Controller
         'productcategory' => 'required',
         //'eventcategory' => 'required',
         'brand' => 'required',
+        'cover_image' => 'image|nullable|max:1999'
         
         
     ]);
     
  
-    $product = new Product;
-    $product->name = $request->input('name');
-  
-   $product->description = $request->input('description');
-    $product->brand_id = $request->input('brand');
-    $product->product_category_id = $request->input('productcategory');
+        $product = new Product;
+        $product->name = $request->input('name');
     
-    $product->user_id = 1; 
+        $product->description = $request->input('description');
+        $product->brand_id = $request->input('brand');
+        $product->product_category_id = $request->input('productcategory');
+        
+        $product->user_id = 1; 
 
-    
-    $product->save();
+        
+        $product->save();
 
-    
+      //event categories
        $eventcategories= $request->input('event_category');
 
             $event_category = EventCategory::find($eventcategories);
 
             $product->eventCategories()->attach($event_category);
 
-
-   
+        //cover image in productImage table
+        $product_cover_image = new ProductImage;
+     
+       // Handle File Upload
+       if($request->hasFile('cover_image')){
+        // Get filename with the extension
+        $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+        // Get just filename
+        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        // Get just ext
+        $extension = $request->file('cover_image')->getClientOriginalExtension();
+        // Filename to store
+        $fileNameToStore= $filename.'_'.time().'.'.$extension;
+        // Upload Image
+        $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
+    } 
+        else {
+            $fileNameToStore = 'noimage.jpg';
+        }
+        $product_cover_image->imageurl = $fileNameToStore;
+        $product_cover_image->cover_flag = 1;
+        $product_cover_image->product_id = $product->id;
+        $product_cover_image->save();
+    
 
         return redirect('/products')->with('success', 'Product Created');
          //return response ()->json($eventcategories);
+
     }
 
     /**
@@ -101,8 +125,10 @@ class ProductController extends Controller
     {
         //
         $product = Product::find($id);
+       
         //return response ()->json($event_categories);
         return view('products.show')->with('product',$product);
+        
     }
 
     /**
@@ -118,7 +144,7 @@ class ProductController extends Controller
         $brands = Brand::all();
         $event_categories = EventCategory::all();
         $product= Product::find($id);
-        
+
         return view('products.edit')->with('product',$product)->with('brands',$brands)->with('product_categories',$product_categories)->with('event_categories',$event_categories);
         
         
@@ -157,7 +183,7 @@ class ProductController extends Controller
         $product->user_id = 1; 
 
         
-        $product->save();
+        
          
         //get all event categories of a product to remove records in the middle table
         $event_categories = $product->eventCategories;
@@ -174,8 +200,47 @@ class ProductController extends Controller
  
          $product->eventCategories()->attach($event_category);
 
+         //cover image in productImage table
+        $product_cover_image = new ProductImage;
+     
+        // Handle File Upload
+        if($request->hasFile('cover_image')){
+         // Get filename with the extension
+         $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+         // Get just filename
+         $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+         // Get just ext
+         $extension = $request->file('cover_image')->getClientOriginalExtension();
+         // Filename to store
+         $fileNameToStore= $filename.'_'.time().'.'.$extension;
+         // Upload Image
+         $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
+         } 
+        if($request->hasFile('cover_image')){
+
+              //get all covers  of a product to remove records in the imageproduct table
+              $images = $product->productImages;
+
+              foreach($images as $image)
+              {
+                      if($image->cover_flag==1) {
+                      Storage::delete('public/cover_images/'.$image->imageurl);
+                      $image->delete(); }
+                          
+                  
+              }
+         $product_cover_image->imageurl = $fileNameToStore;
+         $product_cover_image->cover_flag = 1;
+         $product_cover_image->product_id = $product->id;
+         $product_cover_image->save();
+
+              
+        }
+
+        $product->save();
 
        
+      
 
        return redirect('/products')->with('success', 'Product Updated');
       // return response()->json($request->input('eventcategory'));
@@ -200,9 +265,25 @@ class ProductController extends Controller
         $event_category= EventCategory::find($eventcategory);
         $product->eventCategories()->detach($event_category);
        }
+        
 
+
+       //get all covers and other imgs of a product to remove records in the imageproduct table
+       $images = $product->productImages;
+
+       foreach($images as $image)
+     {
+            
+            Storage::delete('public/cover_images/'.$image->imageurl);
+            $image->delete();
+                
+        
+     }
+      
+       
        //del the product
         $product->delete();
+
         return redirect('/products')->with('success', 'Product Removed');
     }
 }

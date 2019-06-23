@@ -31,6 +31,12 @@ class Product extends Model
         return $this->belongsToMany(EventCategory::class,'product_event_category', 'product_id','eventcategory_id');
         //return $this->belongsToMany(Privileges::class);
     }
+     
+    public function productImages()
+    {
+        return $this->hasMany(ProductImage::class);
+        
+    }
 
     public function inventory(){
         return $this->belongsTo(Inventory::class);

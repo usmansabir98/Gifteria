@@ -44,6 +44,18 @@
     </select>              
     </div>
 
+    <div class="form-group"> Upload Cover Product Image
+        {{Form::file('cover_image')}}
+    </div> 
+
+    <div class="form-group"> Upload more Product Images 
+        {{Form::file('image1')}}
+        {{Form::file('image2')}}
+        {{Form::file('image3')}}
+    </div> 
+
+   
+
     
       
 

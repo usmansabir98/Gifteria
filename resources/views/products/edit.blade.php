@@ -49,6 +49,23 @@
     </select>              
     </div>
 
+    <div class="form-group"> Upload Cover Product Image
+
+        @foreach($product->productImages as $productImage)
+        @if($productImage->cover_flag == 1) 
+       <img style="width:100%" src="/storage/cover_images/{{$productImage->imageurl}}"> 
+        @endif
+        @endforeach
+       
+            {{Form::file('cover_image')}}
+    </div> 
+    
+    <div class="form-group"> Upload more Product Images 
+            {{Form::file('image1')}}
+            {{Form::file('image2')}}
+            {{Form::file('image3')}}
+    </div>
+
     
     {{Form::hidden('_method','PUT')}}
 
