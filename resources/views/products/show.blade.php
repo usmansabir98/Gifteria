@@ -20,12 +20,20 @@
 <h2>{{$eventCategory->name}}</h2>
 @endforeach
  
-
+Cover Image
 @foreach($product->productImages as $productImage) 
 @if($productImage->cover_flag == 1) 
 <img style="width:100%" src="/storage/cover_images/{{$productImage->imageurl}}"> 
 @endif
 @endforeach
+
+Gallery Images
+@foreach($product->productImages as $productImage) 
+@if($productImage->cover_flag == 0) 
+<img style="width:100%" src="/storage/cover_images/{{$productImage->imageurl}}"> 
+@endif
+@endforeach
+
 
         
        

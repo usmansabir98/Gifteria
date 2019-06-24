@@ -58,7 +58,7 @@ class ProductController extends Controller
         'name' => 'required',
         'description' => 'required',
         'productcategory' => 'required',
-        //'eventcategory' => 'required',
+       // 'eventcategory' => 'required',
         'brand' => 'required',
         'cover_image' => 'image|nullable|max:1999'
         
@@ -109,6 +109,38 @@ class ProductController extends Controller
         $product_cover_image->product_id = $product->id;
         $product_cover_image->save();
     
+
+         // /gallery images///
+        
+       $gallery_images = ['image1','image2','image3'];
+
+       foreach($gallery_images as $gallery_image)
+        {
+       // Handle File Upload
+       if($request->hasFile($gallery_image)){
+
+        $product_gallery_image = new ProductImage;
+        // Get filename with the extension
+        $filenameWithExt = $request->file($gallery_image)->getClientOriginalName();
+        // Get just filename
+        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        // Get just ext
+        $extension = $request->file($gallery_image)->getClientOriginalExtension();
+        // Filename to store
+        $fileNameToStore= $filename.'_'.time().'.'.$extension;
+        // Upload Image
+        $path = $request->file($gallery_image)->storeAs('public/cover_images', $fileNameToStore);
+    } 
+        else {
+            $fileNameToStore = 'noimage.jpg';
+        }
+        $product_gallery_image->imageurl = $fileNameToStore;
+        $product_gallery_image->cover_flag = 0;
+        $product_gallery_image->product_id = $product->id;
+        $product_gallery_image->save();
+     
+
+    } //end foreach for gallery image
 
         return redirect('/products')->with('success', 'Product Created');
          //return response ()->json($eventcategories);
@@ -164,11 +196,11 @@ class ProductController extends Controller
         //
         
         $this->validate($request, [
-            'name' => 'required',
+            //'name' => 'required',
             //'description' => 'required',
-            'productcategory' => 'required',
+           // 'productcategory' => 'required',
             //'eventcategory' => 'required',
-            'brand' => 'required',
+            //'brand' => 'required',
             
             
         ]);
@@ -237,10 +269,56 @@ class ProductController extends Controller
               
         }
 
-        $product->save();
+       
+      // /gallery images///
+        
+      $gallery_images = ['image1','image2','image3'];
+
+      foreach($gallery_images as $gallery_image)
+       {
+      // Handle File Upload
+      if($request->hasFile($gallery_image)){
+
+       $product_gallery_image = new ProductImage;
+       // Get filename with the extension
+       $filenameWithExt = $request->file($gallery_image)->getClientOriginalName();
+       // Get just filename
+       $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+       // Get just ext
+       $extension = $request->file($gallery_image)->getClientOriginalExtension();
+       // Filename to store
+       $fileNameToStore= $filename.'_'.time().'.'.$extension;
+       // Upload Image
+       $path = $request->file($gallery_image)->storeAs('public/cover_images', $fileNameToStore);
+   } 
+   if($request->hasFile($gallery_image)){
+
+    //get the particular image1 or 2 or 3  of a product to remove record in the imageproduct table
+   // $images = $product->productImages;
+
+                // foreach($images as $image)
+                // {
+                //         if($image->cover_flag==0) {
+                //         Storage::delete('public/cover_images/'.$image->imageurl);
+                //         $image->delete(); }
+                            
+                    
+                //  }
+                $product_gallery_image->imageurl = $fileNameToStore;
+                $product_gallery_image->cover_flag = 0;
+                $product_gallery_image->product_id = $product->id;
+                $product_gallery_image->save();
+
+    
+                }
+    
+
+       } //end foreach for gallery image
+
 
        
-      
+       $product->save();
+
 
        return redirect('/products')->with('success', 'Product Updated');
       // return response()->json($request->input('eventcategory'));

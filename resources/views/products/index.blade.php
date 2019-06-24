@@ -14,6 +14,10 @@
                 <img style="width:100%" src="/storage/cover_images/{{$productImage->imageurl}}"> 
                 @endif
                 @endforeach
+
+                
+
+
         </div>
 
 
