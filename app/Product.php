@@ -39,7 +39,7 @@ class Product extends Model
     }
 
     public function inventory(){
-        return $this->belongsTo(Inventory::class);
+        return $this->hasMany(Inventory::class);
     }
 
     public function order(){

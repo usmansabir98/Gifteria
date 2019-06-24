@@ -23,6 +23,7 @@
  Route::resource('eventcategories', 'EventCategoriesController');
  Route::resource('productcategories', 'ProductCategoriesController');
  Route::resource('products', 'ProductController');
+ Route::resource('inventory', 'InventoryController');
 
 // Route::get('/inventory', 'PagesController@index');
 
