@@ -29,7 +29,7 @@ Cover Image
 
 Gallery Images
 @foreach($product->productImages as $productImage) 
-@if($productImage->cover_flag == 0) 
+@if($productImage->cover_flag != 0) 
 <img style="width:100%" src="/storage/cover_images/{{$productImage->imageurl}}"> 
 @endif
 @endforeach

@@ -109,38 +109,114 @@ class ProductController extends Controller
         $product_cover_image->product_id = $product->id;
         $product_cover_image->save();
     
-
-         // /gallery images///
         
-       $gallery_images = ['image1','image2','image3'];
-
-       foreach($gallery_images as $gallery_image)
-        {
+        //cover image in productImage table
+        $product_image_1 = new ProductImage;
+     
        // Handle File Upload
-       if($request->hasFile($gallery_image)){
-
-        $product_gallery_image = new ProductImage;
+       if($request->hasFile('image1')){
         // Get filename with the extension
-        $filenameWithExt = $request->file($gallery_image)->getClientOriginalName();
+        $filenameWithExt = $request->file('image1')->getClientOriginalName();
         // Get just filename
         $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
         // Get just ext
-        $extension = $request->file($gallery_image)->getClientOriginalExtension();
+        $extension = $request->file('image1')->getClientOriginalExtension();
         // Filename to store
         $fileNameToStore= $filename.'_'.time().'.'.$extension;
         // Upload Image
-        $path = $request->file($gallery_image)->storeAs('public/cover_images', $fileNameToStore);
+        $path = $request->file('image1')->storeAs('public/cover_images', $fileNameToStore);
     } 
         else {
             $fileNameToStore = 'noimage.jpg';
         }
-        $product_gallery_image->imageurl = $fileNameToStore;
-        $product_gallery_image->cover_flag = 0;
-        $product_gallery_image->product_id = $product->id;
-        $product_gallery_image->save();
+        $product_image_1->imageurl = $fileNameToStore;
+        $product_image_1->cover_flag = 2;
+        $product_image_1->product_id = $product->id;
+        $product_image_1->save();
+
+
+        //cover image in productImage table
+        $product_image_2 = new ProductImage;
+     
+       // Handle File Upload
+       if($request->hasFile('image2')){
+        // Get filename with the extension
+        $filenameWithExt = $request->file('image2')->getClientOriginalName();
+        // Get just filename
+        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        // Get just ext
+        $extension = $request->file('image2')->getClientOriginalExtension();
+        // Filename to store
+        $fileNameToStore= $filename.'_'.time().'.'.$extension;
+        // Upload Image
+        $path = $request->file('image2')->storeAs('public/cover_images', $fileNameToStore);
+    } 
+        else {
+            $fileNameToStore = 'noimage.jpg';
+        }
+        $product_image_2->imageurl = $fileNameToStore;
+        $product_image_2->cover_flag = 3;
+        $product_image_2->product_id = $product->id;
+        $product_image_2->save();
+    
+        
+        //cover image in productImage table
+        $product_image_3 = new ProductImage;
+     
+       // Handle File Upload
+       if($request->hasFile('image3')){
+        // Get filename with the extension
+        $filenameWithExt = $request->file('image3')->getClientOriginalName();
+        // Get just filename
+        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        // Get just ext
+        $extension = $request->file('image3')->getClientOriginalExtension();
+        // Filename to store
+        $fileNameToStore= $filename.'_'.time().'.'.$extension;
+        // Upload Image
+        $path = $request->file('image3')->storeAs('public/cover_images', $fileNameToStore);
+    } 
+        else {
+            $fileNameToStore = 'noimage.jpg';
+        }
+        $product_image_3->imageurl = $fileNameToStore;
+        $product_image_3->cover_flag = 4;
+        $product_image_3->product_id = $product->id;
+        $product_image_3->save();
+
+
+    //      // /gallery images///
+        
+    //    $gallery_images = ['image1','image2','image3'];
+
+    //    foreach($gallery_images as $gallery_image)
+    //     {
+    //     $product_gallery_image = new ProductImage;
+
+    //    // Handle File Upload
+    //    if($request->hasFile($gallery_image)){
+
+    //     // Get filename with the extension
+    //     $filenameWithExt = $request->file($gallery_image)->getClientOriginalName();
+    //     // Get just filename
+    //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+    //     // Get just ext
+    //     $extension = $request->file($gallery_image)->getClientOriginalExtension();
+    //     // Filename to store
+    //     $fileNameToStore= $filename.'_'.time().'.'.$extension;
+    //     // Upload Image
+    //     $path = $request->file($gallery_image)->storeAs('public/cover_images', $fileNameToStore);
+    // } 
+    //     else {
+    //         $fileNameToStore = 'noimage.jpg';
+    //     }
+    //     $product_gallery_image->imageurl = $fileNameToStore;
+    //     $product_gallery_image->cover_flag = 0;
+    //     $product_gallery_image->product_id = $product->id;
+    //     $product_gallery_image->save();
      
 
-    } //end foreach for gallery image
+    // } //end foreach for gallery image
 
         return redirect('/products')->with('success', 'Product Created');
          //return response ()->json($eventcategories);
