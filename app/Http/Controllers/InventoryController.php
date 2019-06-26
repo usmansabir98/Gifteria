@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Inventory;
+use App\Product;
 
 class InventoryController extends Controller
 {
@@ -29,6 +30,8 @@ class InventoryController extends Controller
     public function create()
     {
         //
+        $products = Product::all();
+        return view('inventory.create')->with('products',$products);
     }
 
     /**
@@ -39,7 +42,34 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $this->validate($request, [
+            'batchcode' => 'required',
+            'price' => 'required',
+            'quantity' => 'required',
+          
+            // 'product' => 'required',
+           'isexpirable' => 'required',
+            //'expirydate' => 'required'
+            
+            
+        ]);
+        
+     
+            $inventory_item = new Inventory;
+            $inventory_item->batch_code = $request->input('batchcode');
+            $inventory_item->expiry_date = $request->input('expirydate');
+            $inventory_item->price = $request->input('price');
+            $inventory_item->quantity = $request->input('quantity');
+           $inventory_item->product_id = $request->input('product');
+          //  $inventory_item->product_id = 36;
+            $inventory_item->is_expirable = $request->input('isexpirable');
+    
+    
+            
+            $inventory_item->save();
+
+            return redirect('/inventory')->with('success', 'Inventory item Created');
     }
 
     /**
@@ -51,6 +81,9 @@ class InventoryController extends Controller
     public function show($id)
     {
         //
+        $inventory = Inventory::find($id);
+        // 
+        return view('inventory.show')->with('inventory',$inventory);
     }
 
     /**

@@ -1,16 +1,12 @@
 @extends('layouts.app')
 @section('content')
-    <h1>Inventory Products</h1>
-    @if(count($inventories)> 0)
-
-    @foreach ($inventories as $inventory)
+    <h1>Inventory Product</h1>
+   
      <div class="card card-body bg-light">
 
      <div class="row">
         <div class="col-md-4 col-sm-4">
-               Product Name:
-               
-               <h3><a href="/inventory/{{$inventory->id}}">{{$inventory->product->name}}</a></h3>
+               Product Name: {{$inventory->product->name}}
                 Quantity: {{$inventory->quantity}}
                Price: {{$inventory->price}}
 
@@ -43,11 +39,7 @@
 
      
      </div>
-    @endforeach
-    {{-- {{$brands->links()}} --}}
-    @else 
-    <p>No Inventory items found</p>
-    @endif 
+   
 
     
 
