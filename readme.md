@@ -70,3 +70,10 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+##composers
+For Storing Images
+php artisan storage:link
+
+For changing columns through migrations
+composer require doctrine/dbal
