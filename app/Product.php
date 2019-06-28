@@ -42,10 +42,7 @@ class Product extends Model
         return $this->hasMany(Inventory::class);
     }
 
-    public function order(){
-        return $this->belongsToMany(Order::class,'order_product','product_id','order_id')->withPivot('quantity', 'subTotal');
-    }
-
+   
 
 
 

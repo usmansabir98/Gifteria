@@ -24,6 +24,8 @@
  Route::resource('productcategories', 'ProductCategoriesController');
  Route::resource('products', 'ProductController');
  Route::resource('inventory', 'InventoryController');
+ Route::resource('orders', 'OrderController');
+ Route::resource('orderstatus', 'OrderStatusController');
 
 // Route::get('/inventory', 'PagesController@index');
 

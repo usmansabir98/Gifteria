@@ -33,7 +33,7 @@
     <div class="form-group">
         {{Form::label('isexpirable', 'Isexpirable')}}
         <select name="isexpirable" id="isexpirable">
-            <option value="" selected>Select Product</option>
+            <option value="" selected>Select if expirable</option>
        
             <option value="yes">yes</option>
             <option value="no">no</option>

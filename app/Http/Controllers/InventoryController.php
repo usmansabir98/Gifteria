@@ -61,6 +61,8 @@ class InventoryController extends Controller
             $inventory_item->expiry_date = $request->input('expirydate');
             $inventory_item->price = $request->input('price');
             $inventory_item->quantity = $request->input('quantity');
+
+
            $inventory_item->product_id = $request->input('product');
           //  $inventory_item->product_id = 36;
             $inventory_item->is_expirable = $request->input('isexpirable');
@@ -95,6 +97,9 @@ class InventoryController extends Controller
     public function edit($id)
     {
         //
+        $products = Product::all();
+        $inventory_item = Inventory::find($id);
+        return view('inventory.edit')->with('inventory_item',$inventory_item)->with('products',$products);;
     }
 
     /**
@@ -107,6 +112,35 @@ class InventoryController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $this->validate($request, [
+        //     'batchcode' => 'required',
+        //     'price' => 'required',
+        //     'quantity' => 'required',
+          
+        //     // 'product' => 'required',
+        //    'isexpirable' => 'required',
+        //     //'expirydate' => 'required'
+            
+            
+        ]);
+        
+     
+            $inventory_item = Inventory::find($id);
+            $inventory_item->batch_code = $request->input('batchcode');
+            $inventory_item->expiry_date = $request->input('expirydate');
+            $inventory_item->price = $request->input('price');
+            $inventory_item->quantity = $request->input('quantity');
+
+
+           $inventory_item->product_id = $request->input('product');
+          //  $inventory_item->product_id = 36;
+            $inventory_item->is_expirable = $request->input('isexpirable');
+    
+    
+            
+            $inventory_item->save();
+
+            return redirect('/inventory')->with('success', 'Inventory item Updated');
     }
 
     /**
@@ -118,5 +152,9 @@ class InventoryController extends Controller
     public function destroy($id)
     {
         //
+        $inventory_item = Inventory::find($id);
+        $inventory_item->delete();
+
+        return redirect('/inventory')->with('success', 'Inventory item Removed');
     }
 }
