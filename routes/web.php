@@ -17,8 +17,9 @@
 
 //Route::view('/{path?}', 'app');
 
- Route::get('/', 'PagesController@index');
 
+
+Route::get('/', 'PagesController@index');
  Route::resource('brands', 'BrandsController');
  Route::resource('eventcategories', 'EventCategoriesController');
  Route::resource('productcategories', 'ProductCategoriesController');
@@ -26,10 +27,3 @@
  Route::resource('inventory', 'InventoryController');
  Route::resource('orders', 'OrderController');
  Route::resource('orderstatus', 'OrderStatusController');
-
-// Route::get('/inventory', 'PagesController@index');
-
-//products
-//category
-//brand
-//order

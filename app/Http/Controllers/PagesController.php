@@ -13,7 +13,8 @@ class PagesController extends Controller
         $title = 'Welcome to Laravel!';
         
 
-        return response() -> json($title);
+       return response() -> json($title);
+        //return $title->toJson();
     }
     
 }

@@ -56,7 +56,8 @@ class BrandsController extends Controller
         
 
         $brand->save();
-        return redirect('/brands')->with('success', 'Brand Created');
+       // return redirect('/brands')->with('success', 'Brand Created');
+        return response()->json('Project created!');
     }
 
     /**
@@ -70,7 +71,9 @@ class BrandsController extends Controller
         //
         $brand = Brand::find($id);
        // return response ()->json($brands);
-        return view('brands.show')->with('brand',$brand);
+      //  return view('brands.show')->with('brand',$brand);
+        return $brands->toJson();
+        
 
     }
 
@@ -86,6 +89,7 @@ class BrandsController extends Controller
         $brand = Brand::find($id);
        // return response ()->json($brands);
         return view('brands.edit')->with('brand',$brand);
+        
     }
 
     /**

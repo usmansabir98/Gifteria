@@ -19,8 +19,8 @@ class Inventory extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function order(){
-        return $this->belongsToMany(Order::class,'order_product','product_id','order_id')->withPivot('quantity', 'subTotal');
+    public function orders(){
+        return $this->belongsToMany(Order::class,'order_inventory','inventory_item_id','order_id')->withPivot('quantity', 'subTotal');
     }
 
 }
