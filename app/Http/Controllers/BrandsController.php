@@ -48,16 +48,19 @@ class BrandsController extends Controller
             
         ]);
         
-        // Create Brand
-        $brand = new Brand;
-        $brand->name = $request->input('name');
-        $brand->description = $request->input('description');
-       
-        
-
-        $brand->save();
+        // // Create Brand
+        // $brand = new Brand;
+        // $brand->name = $request->input('name');
+        // $brand->description = $request->input('description');
+        // $brand->save();
        // return redirect('/brands')->with('success', 'Brand Created');
-        return response()->json('Project created!');
+
+       $brand = Brand::create([
+        'name' => $validatedData['name'],
+        'description' => $validatedData['description'],
+        ]);
+
+        return response()->json('Brand created!');
     }
 
     /**
@@ -73,6 +76,7 @@ class BrandsController extends Controller
        // return response ()->json($brands);
       //  return view('brands.show')->with('brand',$brand);
         return $brands->toJson();
+        
         
 
     }
