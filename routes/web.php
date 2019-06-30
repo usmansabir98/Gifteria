@@ -15,15 +15,15 @@
 //     return view('welcome');
 // });
 
-//Route::view('/{path?}', 'app');
+Route::view('/{path?}', 'app');
 
 
 
-Route::get('/', 'PagesController@index');
- Route::resource('brands', 'BrandsController');
- Route::resource('eventcategories', 'EventCategoriesController');
- Route::resource('productcategories', 'ProductCategoriesController');
- Route::resource('products', 'ProductController');
- Route::resource('inventory', 'InventoryController');
- Route::resource('orders', 'OrderController');
- Route::resource('orderstatus', 'OrderStatusController');
+// Route::get('/', 'PagesController@index');
+//  Route::resource('brands', 'BrandsController');
+//  Route::resource('eventcategories', 'EventCategoriesController');
+//  Route::resource('productcategories', 'ProductCategoriesController');
+//  Route::resource('products', 'ProductController');
+//  Route::resource('inventory', 'InventoryController');
+//  Route::resource('orders', 'OrderController');
+//  Route::resource('orderstatus', 'OrderStatusController');
