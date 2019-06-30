@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import NotificationSystem from "react-notification-system";
 
 import AdminNavbar from "../components/Navbars/AdminNavbar";
-import Footer from "../components/Footer/Footer";
+// import Footer from "../components/Footer/Footer";
 import Sidebar from "../components/Sidebar/Sidebar";
 import FixedPlugin from "../components/FixedPlugin/FixedPlugin.jsx";
 
@@ -174,8 +174,8 @@ class Admin extends Component {
             brandText={this.getBrandText(this.props.location.pathname)}
           />
           <Switch>{this.getRoutes(routes)}</Switch>
-          <Footer />
-          <FixedPlugin
+          {/* <Footer /> */}
+          {/* <FixedPlugin
             handleImageClick={this.handleImageClick}
             handleColorClick={this.handleColorClick}
             handleHasImage={this.handleHasImage}
@@ -183,7 +183,7 @@ class Admin extends Component {
             bgImage={this.state["image"]}
             mini={this.state["mini"]}
             handleFixedClick={this.handleFixedClick}
-            fixedClasses={this.state.fixedClasses}
+            fixedClasses={this.state.fixedClasses} */}
           />
         </div>
       </div>

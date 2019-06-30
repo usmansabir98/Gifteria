@@ -16,6 +16,8 @@
         "bootstrap-sass": "^3.3.7",
         "chartist": "0.10.1",
         "cross-env": "^5.1",
+        "datatables.net": "^1.10.19",
+        "datatables.net-bs": "^1.10.19",
         "font-awesome": "^4.7.0",
         "jquery": "^3.2",
         "laravel-mix": "^4.0.7",

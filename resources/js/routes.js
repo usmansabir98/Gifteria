@@ -1,6 +1,12 @@
 import Dashboard from "./views/Dashboard.jsx";
 import UserProfile from "./views/UserProfile.jsx";
 import TableList from "./views/TableList.jsx";
+import ProductList from "./views/ProductList.jsx";
+import InventoryList from "./views/InventoryList.jsx";
+
+import BrandList from "./views/BrandList.jsx";
+import EventCategories from "./views/EventCategories.jsx";
+import ProductCategories from "./views/ProductCategories.jsx";
 import Typography from "./views/Typography.jsx";
 import Icons from "./views/Icons.jsx";
 import Maps from "./views/Maps.jsx";
@@ -22,49 +28,85 @@ const dashboardRoutes = [
     component: UserProfile,
     layout: "/admin"
   },
+  // {
+  //   path: "/table",
+  //   name: "Table List",
+  //   icon: "pe-7s-note2",
+  //   component: TableList,
+  //   layout: "/admin"
+  // },
   {
-    path: "/table",
-    name: "Table List",
+    path: "/products",
+    name: "Products",
     icon: "pe-7s-note2",
-    component: TableList,
+    component: ProductList,
     layout: "/admin"
   },
   {
-    path: "/typography",
-    name: "Typography",
-    icon: "pe-7s-news-paper",
-    component: Typography,
+    path: "/inventory",
+    name: "Inventory",
+    icon: "pe-7s-note2",
+    component: InventoryList,
     layout: "/admin"
   },
   {
-    path: "/icons",
-    name: "Icons",
-    icon: "pe-7s-science",
-    component: Icons,
+    path: "/brands",
+    name: "Brands",
+    icon: "pe-7s-note2",
+    component: BrandList,
     layout: "/admin"
   },
   {
-    path: "/maps",
-    name: "Maps",
-    icon: "pe-7s-map-marker",
-    component: Maps,
+    path: "/eventcategories",
+    name: "Event Categories",
+    icon: "pe-7s-note2",
+    component: EventCategories,
     layout: "/admin"
   },
+  {
+    path: "/productcategories",
+    name: "Product Categories",
+    icon: "pe-7s-note2",
+    component: ProductCategories,
+    layout: "/admin"
+  },
+  // {
+  //   path: "/typography",
+  //   name: "Typography",
+  //   icon: "pe-7s-news-paper",
+  //   component: Typography,
+  //   layout: "/admin"
+  // },
+  // {
+  //   path: "/icons",
+  //   name: "Icons",
+  //   icon: "pe-7s-science",
+  //   component: Icons,
+  //   layout: "/admin"
+  // },
+  // {
+  //   path: "/maps",
+  //   name: "Maps",
+  //   icon: "pe-7s-map-marker",
+  //   component: Maps,
+  //   layout: "/admin"
+  // },
   {
     path: "/notifications",
     name: "Notifications",
     icon: "pe-7s-bell",
     component: Notifications,
     layout: "/admin"
-  },
-  {
-    upgrade: true,
-    path: "/upgrade",
-    name: "Upgrade to PRO",
-    icon: "pe-7s-rocket",
-    component: Upgrade,
-    layout: "/admin"
   }
+  
+  // {
+  //   upgrade: true,
+  //   path: "/upgrade",
+  //   name: "Upgrade to PRO",
+  //   icon: "pe-7s-rocket",
+  //   component: Upgrade,
+  //   layout: "/admin"
+  // }
 ];
 
 export default dashboardRoutes;
