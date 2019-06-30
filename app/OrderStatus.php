@@ -9,6 +9,8 @@ class OrderStatus extends Model
     //
     protected $table = 'order_statuses';
 
+    protected $fillable = ['name','description'];
+
     // Primary Key
     public $primaryKey = 'id';
     

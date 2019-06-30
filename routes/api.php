@@ -27,15 +27,22 @@ use Illuminate\Http\Request;
 
 
 
-// Route::get('/', 'PagesController@index');
+Route::get('/', 'PagesController@index');
 
-// //Route::apiResource('brands', 'BrandsController');
+Route::resource('brands', 'BrandsController');
+Route::get('brands/{id}/delete', 'BrandsController@destroy');
 
 // Route::get('brands', 'BrandsController@index');
 // Route::get('brands/{id}', 'BrandsControllerController@show');
-// Route::resource('eventcategories', 'EventCategoriesController');
-// Route::resource('productcategories', 'ProductCategoriesController');
-// Route::resource('products', 'ProductController');
-// Route::resource('inventory', 'InventoryController');
-// Route::resource('orders', 'OrderController');
-// Route::resource('orderstatus', 'OrderStatusController');
+Route::resource('eventcategories', 'EventCategoriesController');
+Route::get('eventcategories/{id}/delete', 'EventCategoriesController@destroy');
+Route::resource('productcategories', 'ProductCategoriesController');
+Route::get('productcategories/{id}/delete', 'ProductCategoriesController@destroy');
+Route::resource('products', 'ProductController');
+Route::get('products/{id}/delete', 'ProductController@destroy');
+Route::resource('inventory', 'InventoryController');
+Route::get('inventory/{id}/delete', 'InventoryController@destroy');
+Route::resource('orders', 'OrderController');
+Route::get('orders/{id}/delete', 'OrderController@destroy');
+Route::resource('orderstatus', 'OrderStatusController');
+Route::get('orderstatus/{id}/delete', 'OrderStatusController@destroy');

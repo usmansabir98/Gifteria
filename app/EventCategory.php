@@ -8,7 +8,7 @@ class EventCategory extends Model
 {
     //
     protected $table = 'event_categories';
-
+    protected $fillable = ['name', 'description'];
     // Primary Key
     public $primaryKey = 'id';
     
