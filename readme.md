@@ -77,3 +77,8 @@ php artisan storage:link
 
 For changing columns through migrations
 composer require doctrine/dbal
+
+
+For seeding, run:
+composer dump-autoload
+php artisan db:seed --class=UsersTableSeeder

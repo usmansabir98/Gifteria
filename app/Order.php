@@ -22,8 +22,8 @@ protected $table = 'orders';
     public function orderstatus(){
                 return $this->HasOne(OrderStatus::class);
     }
-    public function inventory(){
-     return $this->belongsToMany(Inventory::class,'order_inventory','order_id','inventoryitem_id')->withPivot('quantity', 'subTotal');
+    public function inventories(){
+     return $this->belongsToMany(Inventory::class,'order_inventory','order_id','inventory_item_id')->withPivot('quantity', 'subTotal');
  }
 
 }

@@ -48,15 +48,19 @@ class BrandsController extends Controller
             
         ]);
         
-        // Create Brand
-        $brand = new Brand;
-        $brand->name = $request->input('name');
-        $brand->description = $request->input('description');
-       
-        
+        // // Create Brand
+        // $brand = new Brand;
+        // $brand->name = $request->input('name');
+        // $brand->description = $request->input('description');
+        // $brand->save();
+       // return redirect('/brands')->with('success', 'Brand Created');
 
-        $brand->save();
-        return redirect('/brands')->with('success', 'Brand Created');
+       $brand = Brand::create([
+        'name' => $validatedData['name'],
+        'description' => $validatedData['description'],
+        ]);
+
+        return response()->json('Brand created!');
     }
 
     /**
@@ -70,7 +74,10 @@ class BrandsController extends Controller
         //
         $brand = Brand::find($id);
        // return response ()->json($brands);
-        return view('brands.show')->with('brand',$brand);
+      //  return view('brands.show')->with('brand',$brand);
+        return $brands->toJson();
+        
+        
 
     }
 
@@ -86,6 +93,7 @@ class BrandsController extends Controller
         $brand = Brand::find($id);
        // return response ()->json($brands);
         return view('brands.edit')->with('brand',$brand);
+        
     }
 
     /**
