@@ -81,4 +81,4 @@ composer require doctrine/dbal
 
 For seeding, run:
 composer dump-autoload
-php artisan db:seed --class=UsersTableSeeder
+php artisan db:seed --class=OrderstatusesTableSeeder
