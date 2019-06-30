@@ -18,8 +18,8 @@ class BrandsController extends Controller
         $brands = Brand::orderBy('name')->paginate(10);;
         
 
-         //return response ()->json($brands);
-         return view('brands.index')->with('brands',$brands);
+         return $brands->toJson();
+        // return view('brands.index')->with('brands',$brands);
     }
 
     /**
@@ -42,11 +42,11 @@ class BrandsController extends Controller
     public function store(Request $request)
     {
         //
-        $this->validate($request, [
-            'name' => 'required',
-            'description' => 'required',
+        // $this->validate($request, [
+        //     'name' => 'required',
+        //     'description' => 'required',
             
-        ]);
+        // ]);
         
         // // Create Brand
         // $brand = new Brand;
@@ -54,6 +54,8 @@ class BrandsController extends Controller
         // $brand->description = $request->input('description');
         // $brand->save();
        // return redirect('/brands')->with('success', 'Brand Created');
+       $validatedData = $request->validate(['name' => 'required',
+       'description' => 'required',]);
 
        $brand = Brand::create([
         'name' => $validatedData['name'],
@@ -75,7 +77,7 @@ class BrandsController extends Controller
         $brand = Brand::find($id);
        // return response ()->json($brands);
       //  return view('brands.show')->with('brand',$brand);
-        return $brands->toJson();
+        return $brand->toJson();
         
         
 
@@ -104,26 +106,27 @@ class BrandsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
-        //
-        $this->validate($request, [
-            'name' => 'required',
-            'description' => 'required',
-            
-        ]);
-        
-        // Create Brand
-        $brand =  Brand::find($id);
-        $brand->name = $request->input('name');
-        $brand->description = $request->input('description');
-       
-        
+    {        
+        // // Create Brand
+        // $brand =  Brand::find($id);
+        // $brand->name = $request->input('name');
+        // $brand->description = $request->input('description');
+        // $brand->save();
+        // return redirect('/brands')->with('success', 'Brand Updated');
 
-        $brand->save();
-        return redirect('/brands')->with('success', 'Brand Updated');
+  
+        Brand::find($id)->update(['name' => $request->input('name'),'description' => $request->input('description')]);
+        return response()->json('Brand Updated!');
+
     }
-
+     
+    // public function markAsCompleted(Brand $brand)
+    // {
+    //     $brand->is_completed = true;
+    //     $brand->update();
+  
+    //     return response()->json('Brand updated!');
+    // }
     /**
      * Remove the specified resource from storage.
      *
@@ -136,7 +139,8 @@ class BrandsController extends Controller
         $brand = Brand::find($id);
         
         $brand->delete();
-        return redirect('/brands')->with('success', 'Brand Removed');
+       // return redirect('/brands')->with('success', 'Brand Removed');
+        return response()->json('Brand deleted!');
     }
     
 }

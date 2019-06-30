@@ -42,6 +42,7 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         //
+        /*
         $this->validate($request, [
             // 'name' => 'required',
             // 'description' => 'required',
@@ -49,33 +50,42 @@ class OrderController extends Controller
         ]);
         // Create Order
         $order = new Order;
-        // $brand->user_id = 1;
-        // $brand->$status_id = $request->input('status');
-        // $brand->date_of_order = $request->input('date_of_order');
-        // $brand->expected_delivery_date = $request->input('expected_delivery_date');
-        // $brand->total_cost = $request->input('total_cost');
-        // $brand->additional_info = $request->input('additional_info');
-        // $brand->billing_address = $request->input('billing_address');
-        // $brand->postal_code= $request->input('postal_code');
+        // $order->user_id = 1;
+        // $order->$status_id = $request->input('status');
+        // $order->date_of_order = $request->input('date_of_order');
+        // $order->expected_delivery_date = $request->input('expected_delivery_date');
+        // $order->total_cost = $request->input('total_cost');
+        // $order->additional_info = $request->input('additional_info');
+        // $order->billing_address = $request->input('billing_address');
+        // $order->postal_code= $request->input('postal_code');
 
          $order->user_id = 1;
          $order->status_id = 1;
         $order->date_of_order = '2019-06-30';
          $order->expected_delivery_date = '2019-07-03';
-        $order->total_cost = '5000';
-        
+        $order->total_cost = '5000';   
         $order->additional_info = 'jzlgkz';
         $order->billing_address = 'xmglr';
        $order->postal_code= '123';
-       $order->save();
+       $order->save();  
+       */
+// for api
+    //   $validatedData = $request->validate(['billing_address' => 'required',
+    //   'postal_code' => 'required']);
+
+      $order = Order::create([
+        'user_id' => '1','date_of_order' => '2019-06-30','expected_delivery_date' => '2019-06-30','total_cost'=>
+         '600', 'additional_info'=> 'mg','billing_address'=>'gmgh','postal_code'=>'5990','status_id'=>'1'
+         ]);
 
         //inventory mapping
        $orderinventories= $request->input('inventories');
-
+    
        $orderinventory = Inventory::find($orderinventories);
 
        //$order->inventories()->attach($orderinventory, array("quantity"=>2, "subTotal"=>1000));
        $order->inventories()->save($orderinventory, ['order_id'=>$order->id,'quantity'=>2, 'subTotal'=>1000]);
+
         return response()->json('Order Placed!');
     }
 
@@ -117,7 +127,11 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
+        Order::find($id)->update(['user_id' => '1','date_of_order' => '2019-06-30','expected_delivery_date' => '2019-06-30','total_cost'=>
+        '600', 'additional_info'=> 'mg','billing_address'=>'gmghq','postal_code'=>'5990','status_id'=>'1'
+        ]);
+        return response()->json('Order Updated!');
     }
 
     /**
@@ -139,5 +153,9 @@ class OrderController extends Controller
         $order_inventory=Inventory::find($order_inventory);
         $order->inventories()->detach($order_inventory);
        }
+
+       $order->delete();
+
+        return response()->json('Order Deleted');
     }
 }

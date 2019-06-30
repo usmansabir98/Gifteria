@@ -17,7 +17,8 @@ class OrderStatusController extends Controller
     {
         //
         $orderstatuses = OrderStatus::all();
-        return view ('orderstatuses.index')->with('orderstatuses',$orderstatuses);
+        //return view ('orderstatuses.index')->with('orderstatuses',$orderstatuses);
+        return $orderstatuses->toJson();
     }
 
     /**
@@ -40,20 +41,25 @@ class OrderStatusController extends Controller
     {
         //
         //
+         /*
         $this->validate($request, [
             'description' => 'required',
-            'name' => 'required',
-
-            
-            
+            'name' => 'required',  
         ]);
-
         $orderstatus = New OrderStatus;
         $orderstatus->name = $request->input('name');
         $orderstatus->description = $request->input('description');
         $orderstatus->save();
+        return redirect('/orderstatus')->with('success', 'Order Status created'); */
+        $validatedData = $request->validate(['name' => 'required',
+       'description' => 'required',]);
 
-        return redirect('/orderstatus')->with('success', 'Order Status created');
+       $orderstatus = OrderStatus::create([
+        'name' => $validatedData['name'],
+        'description' => $validatedData['description'],
+        ]);
+
+        return response()->json('OrderStatus created!');
     }
 
     /**
@@ -66,7 +72,8 @@ class OrderStatusController extends Controller
     {
         //
         $orderstatus = OrderStatus::find($id);
-        return view('orderstatuses.show')->with('orderstatus',$orderstatus);
+        //return view('orderstatuses.show')->with('orderstatus',$orderstatus);
+        return $orderstatus->toJson();
     }
 
     /**
@@ -92,13 +99,15 @@ class OrderStatusController extends Controller
     public function update(Request $request, $id)
     {
         //
-
+          /*
         $orderstatus = OrderStatus::find($id);
         $orderstatus->name = $request->input('name');
         $orderstatus->description = $request->input('description');
         $orderstatus->save();
-
-        return redirect('/orderstatus')->with('success', 'Order Status Updated');
+        return redirect('/orderstatus')->with('success', 'Order Status Updated'); 
+        */
+        OrderStatus::find($id)->update(['name' => $request->input('name'),'description' => $request->input('description')]);
+        return response()->json('Order Status Updated!');
     }
     
 
@@ -116,6 +125,7 @@ class OrderStatusController extends Controller
     
         $orderstatus->delete();
 
-        return redirect('/orderstatus')->with('success', 'Order Status Deleted');
+        //return redirect('/orderstatus')->with('success', 'Order Status Deleted');
+        return response()->json('Order Status deleted!');
     }
 }

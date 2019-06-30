@@ -9,6 +9,13 @@ class Inventory extends Model
     //
     protected $table = 'inventories';
 
+    protected $fillable = ['batch_code',
+    'expiry_date',
+    'price',
+    'product_id',
+    'quantity',
+    'is_expirable'];
+
     // Primary Key
     public $primaryKey = 'id';
     

@@ -19,7 +19,7 @@
         <select name="maincategory" id="maincategory">
             <option value="" selected>Select</option>
         @foreach ($maincategories as $maincategory)
-            <option value="{{$maincategory->id }}">{{$maincategory->name }}</option>
+            <option @if(old('maincategory',$product_category->maincategory) == $maincategory->id) selected @endif value="{{$maincategory->id }}">{{$maincategory->name }}</option>
         @endforeach
     </select>              
     </div>

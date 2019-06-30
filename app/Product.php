@@ -9,6 +9,7 @@ class Product extends Model
     protected $table = 'products';
 
     // Primary Key
+    protected $fillable = ['name','description', 'product_category_id','brand_id','user_id'];
     public $primaryKey = 'id';
     
     public $timestamps = true;

@@ -18,8 +18,8 @@ class EventCategoriesController extends Controller
         $event_categories = EventCategory::orderBy('name')->paginate(10);;
         
 
-         //return response ()->json($brands);
-         return view('eventcategories.index')->with('event_categories',$event_categories);
+         return $event_categories-> toJson();
+         //return view('eventcategories.index')->with('event_categories',$event_categories);
     }
 
     /**
@@ -42,21 +42,26 @@ class EventCategoriesController extends Controller
     public function store(Request $request)
     {
         //
-        $this->validate($request, [
-            'name' => 'required',
-            'description' => 'required',
+        // $this->validate($request, [
+        //     'name' => 'required',
+        //     'description' => 'required',
             
-        ]);
-        
-        // Create Brand
-        $event_category = new EventCategory;
-        $event_category->name = $request->input('name');
-        $event_category->description = $request->input('description');
-       
-        
+        // ]);
+        // // Create Brand
+        // $event_category = new EventCategory;
+        // $event_category->name = $request->input('name');
+        // $event_category->description = $request->input('description');
+        // $event_category->save();
+        // return redirect('/eventcategories')->with('success', 'EventCategory Created');
+        $validatedData = $request->validate(['name' => 'required',
+       'description' => 'required',]);
 
-        $event_category->save();
-        return redirect('/eventcategories')->with('success', 'EventCategory Created');
+       $event_category = EventCategory::create([
+        'name' => $validatedData['name'],
+        'description' => $validatedData['description'],
+        ]);
+
+        return response()->json('Event Category created!');
     }
 
     /**
@@ -70,7 +75,8 @@ class EventCategoriesController extends Controller
         //
         $event_category = EventCategory::find($id);
         //return response ()->json($event_categories);
-        return view('eventcategories.show')->with('event_category',$event_category);
+        //return view('eventcategories.show')->with('event_category',$event_category);
+        return $event_category->toJson();
 
     }
 
@@ -99,21 +105,21 @@ class EventCategoriesController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $this->validate($request, [
-            'name' => 'required',
-            'description' => 'required',
+        // $this->validate($request, [
+        //     'name' => 'required',
+        //     'description' => 'required',
             
-        ]);
+        // ]);
         
-        // Create Brand
-        $event_category = EventCategory::find($id);
-        $event_category->name = $request->input('name');
-        $event_category->description = $request->input('description');
-       
-        
+        // // Create Brand
+        // $event_category = EventCategory::find($id);
+        // $event_category->name = $request->input('name');
+        // $event_category->description = $request->input('description');
+        // $event_category->save();
+        // return redirect('/eventcategories')->with('success', 'Event Category Updated');
 
-        $event_category->save();
-        return redirect('/eventcategories')->with('success', 'Event Category Updated');
+        EventCategory::find($id)->update(['name' => $request->input('name'),'description' => $request->input('description')]);
+        return response()->json('Event Category Updated!');
     }
 
     /**
@@ -128,6 +134,7 @@ class EventCategoriesController extends Controller
         $event_category = EventCategory::find($id);
         
         $event_category->delete();
-        return redirect('/eventcategories')->with('success', 'Event Category Removed');
+        //return redirect('/eventcategories')->with('success', 'Event Category Removed');
+        return response()->json('EventCategory deleted!');
     }
 }

@@ -18,7 +18,8 @@ class InventoryController extends Controller
         //
         $inventories = Inventory::orderBy('id')->paginate(20);
         // 
-        return view('inventory.index')->with('inventories',$inventories);
+        //return view('inventory.index')->with('inventories',$inventories);
+        return $inventories-> toJson();
 
     }
 
@@ -42,7 +43,7 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
-        
+        /*
         $this->validate($request, [
             'batchcode' => 'required',
             'price' => 'required',
@@ -54,24 +55,31 @@ class InventoryController extends Controller
             
             
         ]);
-        
-     
             $inventory_item = new Inventory;
             $inventory_item->batch_code = $request->input('batchcode');
             $inventory_item->expiry_date = $request->input('expirydate');
             $inventory_item->price = $request->input('price');
             $inventory_item->quantity = $request->input('quantity');
-
-
            $inventory_item->product_id = $request->input('product');
           //  $inventory_item->product_id = 36;
             $inventory_item->is_expirable = $request->input('isexpirable');
-    
-    
-            
             $inventory_item->save();
+            return redirect('/inventory')->with('success', 'Inventory item Created'); */
 
-            return redirect('/inventory')->with('success', 'Inventory item Created');
+            $validatedData = $request->validate(['batchcode' => 'required',
+            'price' => 'required', 'quantity' => 'required', 'isexpirable' => 'required',]);
+
+       $inventory_item = Inventory::create([
+        'batch_code' => $validatedData['batchcode'],
+        'expiry_date' => $request->input('expirydate'),
+        'price' => $validatedData['price'],
+        'product_id' => $request->input('product'),
+        'quantity' => $validatedData['quantity'],
+        'is_expirable' => $validatedData['isexpirable'],
+       
+        ]);
+
+        return response()->json('inventory item created');
     }
 
     /**
@@ -85,7 +93,8 @@ class InventoryController extends Controller
         //
         $inventory = Inventory::find($id);
         // 
-        return view('inventory.show')->with('inventory',$inventory);
+       // return view('inventory.show')->with('inventory',$inventory);
+       return $inventory->toJson();
     }
 
     /**
@@ -111,36 +120,29 @@ class InventoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        $this->validate($request, [
-        //     'batchcode' => 'required',
-        //     'price' => 'required',
-        //     'quantity' => 'required',
-          
-        //     // 'product' => 'required',
-        //    'isexpirable' => 'required',
-        //     //'expirydate' => 'required'
-            
-            
-        ]);
+       
         
      
-            $inventory_item = Inventory::find($id);
+           /* $inventory_item = Inventory::find($id);
             $inventory_item->batch_code = $request->input('batchcode');
             $inventory_item->expiry_date = $request->input('expirydate');
             $inventory_item->price = $request->input('price');
             $inventory_item->quantity = $request->input('quantity');
-
-
            $inventory_item->product_id = $request->input('product');
-          //  $inventory_item->product_id = 36;
             $inventory_item->is_expirable = $request->input('isexpirable');
-    
-    
-            
-            $inventory_item->save();
+          $inventory_item->save();
+         return redirect('/inventory')->with('success', 'Inventory item Updated'); */
 
-            return redirect('/inventory')->with('success', 'Inventory item Updated');
+         Inventory::find($id)->update([
+            'batch_code' => $request->input('batchcode'),
+            'expiry_date' => $request->input('expirydate'),
+            'price' => $$request->input('price'),
+            'product_id' => $request->input('product'),
+            'quantity' =>$request->input('quantity'),
+           
+            ]);
+
+            return response()->json('inventory item updated');
     }
 
     /**
@@ -155,6 +157,7 @@ class InventoryController extends Controller
         $inventory_item = Inventory::find($id);
         $inventory_item->delete();
 
-        return redirect('/inventory')->with('success', 'Inventory item Removed');
+        return response()->json('inventory item deleted');
+        //return redirect('/inventory')->with('success', 'Inventory item Removed');
     }
 }

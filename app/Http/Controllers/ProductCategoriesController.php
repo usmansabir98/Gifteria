@@ -18,8 +18,9 @@ class ProductCategoriesController extends Controller
         $product_categories = ProductCategory::orderBy('name')->paginate(10);
         
 
-         //return response ()->json($brands);
-         return view('productcategories.index')->with('product_categories',$product_categories);
+         //return response ()->json($product_categories);
+        // return view('productcategories.index')->with('product_categories',$product_categories);
+         return $product_categories->toJson();
     }
 
     /**
@@ -44,27 +45,46 @@ class ProductCategoriesController extends Controller
     public function store(Request $request)
     {
         //
-        $this->validate($request, [
-            'name' => 'required',
-            'description' => 'required',
+        // $this->validate($request, [
+        //     'name' => 'required',
+        //     'description' => 'required',
             
             
-        ]);
+        // ]);
         
         // Create 
-        $product_category = new ProductCategory;
-        $product_category->name = $request->input('name');
-        $product_category->description = $request->input('description');
+    //     $product_category = new ProductCategory;
+    //     $product_category->name = $request->input('name');
+    //     $product_category->description = $request->input('description');
 
-       if($request->input('maincategory')) {
-        $product_category->main_category = $request->input('maincategory');
-         }
-       else{
-           $product_category->main_category =NULL;
-         }
+    //    if($request->input('maincategory')) {
+    //     $product_category->main_category = $request->input('maincategory');
+    //      }
+    //    else{
+    //        $product_category->main_category =NULL;
+    //      }
         
-        $product_category->save();
-        return redirect('/productcategories')->with('success', 'ProductCategory Created');
+    //     $product_category->save();
+       // return redirect('/productcategories')->with('success', 'ProductCategory Created');
+
+        $validatedData = $request->validate(['name' => 'required',
+        'description' => 'required',]);
+
+        if($request->input('maincategory')) {
+            $main_category = $request->input('maincategory');
+             }
+           else{
+            $main_category =NULL;
+             }
+ 
+        $product_category = ProductCategory::create([
+         'name' => $validatedData['name'],
+         'description' => $validatedData['description'],
+         'main_category' => $main_category
+         
+         ]);
+ 
+         return response()->json('Main category created!');
     }
 
     /**
@@ -78,7 +98,8 @@ class ProductCategoriesController extends Controller
         //
         $product_category = ProductCategory::find($id);
         //return response ()->json($event_categories);
-        return view('productcategories.show')->with('product_category',$product_category);
+        //return view('productcategories.show')->with('product_category',$product_category);
+        return $$product_category->toJson();
 
     }
 
@@ -91,9 +112,10 @@ class ProductCategoriesController extends Controller
     public function edit($id)
     {
         //
+        $maincategories = ProductCategory::whereNull('main_category')->get();
         $product_category= ProductCategory::find($id);
        // return response ()->json($brands);
-        return view('productcategories.edit')->with('product_category',$product_category);
+        return view('productcategories.edit')->with('product_category',$product_category)->with('maincategories',$maincategories);;
 
     }
 
@@ -107,21 +129,27 @@ class ProductCategoriesController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $this->validate($request, [
-            'name' => 'required',
-            'description' => 'required',
+        // $this->validate($request, [
+        //     'name' => 'required',
+        //     'description' => 'required',
             
-        ]);
+        // ]);
         
-        // Create Brand
-        $product_category = ProductCategory::find($id);
-        $product_category->name = $request->input('name');
-        $product_category->description = $request->input('description');
+        // // Create Brand
+        // $product_category = ProductCategory::find($id);
+        // $product_category->name = $request->input('name');
+        //$product_category->main_category = $request->input('maincategory');
+        // $product_category->description = $request->input('description');
        
         
 
-        $product_category->save();
-        return redirect('/productcategories')->with('success', 'Event Category Updated');
+        // $product_category->save();
+        // return redirect('/productcategories')->with('success', 'Event Category Updated');
+
+
+        ProductCategory::find($id)->update(['name' => $request->input('name'),
+        'description' => $request->input('description'), 'main_category' => $request->input('main_category')]);
+        return response()->json('Product Category Updated!');
     }
 
     /**
@@ -136,6 +164,7 @@ class ProductCategoriesController extends Controller
         $product_category = ProductCategory::find($id);
         
         $product_category->delete();
-        return redirect('/productcategories')->with('success', 'Product Category Removed');
+       // return redirect('/productcategories')->with('success', 'Product Category Removed');
+        return response()->json('ProductCategory deleted!');
     }
 }

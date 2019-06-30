@@ -9,7 +9,8 @@ class Order extends Model
     //
 
 protected $table = 'orders';
-
+  protected $fillable = ['user_id','date_of_order','expected_delivery_date','total_cost',
+ 'additional_info','billing_address','postal_code','status_id'];
     // Primary Key
     public $primaryKey = 'id';
     
