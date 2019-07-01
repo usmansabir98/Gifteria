@@ -16,9 +16,18 @@ class InventoryController extends Controller
     public function index()
     {
         //
-        $inventories = Inventory::orderBy('id')->paginate(20);
+        //$inventories = Inventory::orderBy('id')->paginate(20);
         // 
         //return view('inventory.index')->with('inventories',$inventories);
+            
+            $inventories = Product::
+            join('brands' , 'products.brand_id' , '=' , 'brands.id')->
+            join('inventories', 'inventories.product_id', '=', 'products.id') ->
+            join('product_categories', 'products.product_category_id', '=', 'product_categories.id')
+            ->select('inventories.*', 'products.name  AS product_name','brands.name as brand_name', 'product_categories.name as product_category_name')
+            ->orderBy('inventories.id')
+            ->get() ;
+
         return $inventories-> toJson();
 
     }
@@ -94,7 +103,18 @@ class InventoryController extends Controller
         $inventory = Inventory::find($id);
         // 
        // return view('inventory.show')->with('inventory',$inventory);
-       return $inventory->toJson();
+      // return $inventory->toJson();
+
+       return [
+        'id' => $inventory->id,
+        'inventory_item_name' => $inventory->product->name,
+        'inventory_item_product_category' => $inventory->product->productCategory->name,
+       //  'inventory_item_product_event_category' =>$inventory->product->eventCategories,
+        'inventory_item_product_brand' => $inventory->product->brand->name,
+        'created_at' => $inventory->created_at,
+        'updated_at' => $inventory->updated_at,
+       // 'inventory_item_product_images' => $inventory->product->productImages
+    ];
     }
 
     /**
