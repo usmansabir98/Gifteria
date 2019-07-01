@@ -24,11 +24,62 @@ class InventoryController extends Controller
             join('brands' , 'products.brand_id' , '=' , 'brands.id')->
             join('inventories', 'inventories.product_id', '=', 'products.id') ->
             join('product_categories', 'products.product_category_id', '=', 'product_categories.id')
-            ->select('inventories.*', 'products.name  AS product_name','brands.name as brand_name', 'product_categories.name as product_category_name')
+            ->select('inventories.*','brands.name as brand_name', 'product_categories.name as product_category_name')
             ->orderBy('inventories.id')
             ->get() ;
 
-        return $inventories-> toJson();
+        //return $inventories-> toJson();
+           
+        $INVENTORIES = [];  
+         
+         
+         foreach ($inventories as $inventory)  {
+
+            $INV = Product::find($inventory->product_id);  
+            ///event categories
+            $i = 0;
+            foreach($INV ->eventCategories as $eventcategory){
+                $event[$i]= $eventcategory->name;
+                $i++;
+            }
+            
+            //cover image
+            $coverimage= '';
+            foreach($INV ->productImages as $image){
+                if($image->cover_flag == 1)
+                $coverimage= $image->imageurl;
+            }
+            //name
+            // $name='';
+            // $name = $INV->name;
+            
+            //array of each record
+            $inv = array (
+                'id' => $inventory->id,
+                'name' => $name = $INV->name,
+                'brand' => $inventory->brand_name,
+                 // to fill with the photos,
+                 'event_category' => $event,
+                 'cover_image' => $coverimage,
+                'product_category' => $inventory->product_category_name,
+                'quantity' => $inventory->quantity,
+                'price' => $inventory->price,
+                'batch_code' => $inventory->batch_code,
+                'is_expirable' => $inventory->is_expirable,'expiry_date' => $inventory->expiry_date,
+            );
+
+            array_push($INVENTORIES, $inv);
+            $event = []; //empty it before next item
+            $coverimage = ''; //empty it before next item
+            $name=''; //empty it before next item
+
+       
+        } //end foreach
+
+           
+       // return $products->toJson();
+
+       return $INVENTORIES ;
 
     }
 
@@ -99,21 +150,48 @@ class InventoryController extends Controller
      */
     public function show($id)
     {
-        //
+        
         $inventory = Inventory::find($id);
         // 
        // return view('inventory.show')->with('inventory',$inventory);
       // return $inventory->toJson();
 
+      //event categories
+    $i = 0; $event =[];
+    foreach($inventory->product->eventCategories as $eventcategory){
+        $event[$i]= $eventcategory->name;
+        $i++;
+   }
+    
+       //cover image
+    $coverimage= '';$image1='';$image2='';$image3='';
+    foreach($inventory->product->productImages as $image){
+        if($image->cover_flag == 1)
+        $coverimage= $image->imageurl;
+        elseif($image->cover_flag == 2)
+        $image1= $image->imageurl;
+        elseif($image->cover_flag == 3)
+        $image2= $image->imageurl;
+        elseif($image->cover_flag == 4)
+        $image3= $image->imageurl;
+    }
        return [
         'id' => $inventory->id,
         'inventory_item_name' => $inventory->product->name,
         'inventory_item_product_category' => $inventory->product->productCategory->name,
-       //  'inventory_item_product_event_category' =>$inventory->product->eventCategories,
+       'price' =>$inventory->price,
+       'quantity' =>$inventory->quantity,
+       'batch_code' =>$inventory->batch_code,
+       'is_expirable' =>$inventory->is_expirable,
+       'expiry_date' => $inventory->expiry_date,
         'inventory_item_product_brand' => $inventory->product->brand->name,
         'created_at' => $inventory->created_at,
         'updated_at' => $inventory->updated_at,
-       // 'inventory_item_product_images' => $inventory->product->productImages
+        'product_event_category' =>$event,
+        'product_cover_image' => $coverimage,
+        'product_image1' => $image1,
+        'product_image2' => $image2,
+        'product_image3' => $image3,
     ];
     }
 
