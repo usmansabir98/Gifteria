@@ -66,6 +66,7 @@ class InventoryController extends Controller
                 'price' => $inventory->price,
                 'batch_code' => $inventory->batch_code,
                 'is_expirable' => $inventory->is_expirable,'expiry_date' => $inventory->expiry_date,
+                
             );
 
             array_push($INVENTORIES, $inv);
@@ -218,6 +219,7 @@ class InventoryController extends Controller
             'batch_code' => $inventory->batch_code,
             'is_expirable' => $inventory->is_expirable,
             'expiry_date' => $inventory->expiry_date,
+            'created_at' => $inventory->created_at
         ];
         
     }

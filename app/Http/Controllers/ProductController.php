@@ -386,7 +386,8 @@ class ProductController extends Controller
                  'image1' => $image1,
                  'image2' => $image2,
                  'image3' => $image3,
-                'product_category' => $product->productCategory->name
+                'product_category' => $product->productCategory->name,
+                'created_at' => $product->created_at
             ];
 
        return $pro;
