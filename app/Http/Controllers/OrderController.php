@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Order;
 use App\Inventory;
+use App\OrderStatus;
+use Illuminate\Support\Facades\DB;
 class OrderController extends Controller
 {
     /**
@@ -15,10 +17,61 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
         $orders = Order::all();
-        //return response() ->json($orders);
-        return $orders ->toJson();
+       // return $orders ->toJson();
+       $ORDERS = [];    
+
+       foreach($orders as $order) { 
+
+            $i = 0; $inv =[];
+            foreach($order ->inventories as $inventory){
+            $inv[$i]= $inventory->product->name;
+            $i++;
+         }
+                  
+         $order_inventories = DB::table('order_inventory')->where('order_id',$order->id)->get();
+         $j = 0;
+        $ord_inv =[]; 
+                foreach($order_inventories as $order_inventory){
+                    $k=0;
+                    $ord_inv =[$j,$k] = $order_inventory->quantity ; 
+                    $k++; 
+                    $ord_inv=[$j,$k] = $order_inventory->subTotal ;
+                    $k++; 
+
+                    $j++;
+                }
+        
+         $orderstatus=OrderStatus::find($order->status_id);
+
+        $ord = array (
+            'id' => $order->id,
+            'user_name' => $order->user->name,
+            //info of each inventory item selected returned in a sub array that includes item name,quantity and subtotal
+            // 'products' => $inv,
+            // 'quantities' => $ord_inv_quantity,
+            // 'subtoal' => $ord_inv_subtotal,
+            'items' => $ord_inv,
+            'date_of_order' => $order->date_of_order,
+            'expected_delivery_date' => $order->expected_delivery_date,
+            'total_cost' => $order ->total_cost,
+            'additional info' => $order->additional_info,
+            'billing_address' => $order->billing_address,
+            'postal_code' => $order->postal_code,
+            'status' => $orderstatus->name
+        );
+
+        array_push($ORDERS, $ord);
+        $event = []; //empty it before next order
+        $ord_inv_quantity =[]; 
+        $ord_inv_subtotal =[];
+        
+
+   
+    } //end foreach
+
+
+   return $ORDERS;
     }
 
     /**
