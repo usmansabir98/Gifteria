@@ -15,12 +15,37 @@ class ProductCategoriesController extends Controller
     public function index()
     {
         //
-        $product_categories = ProductCategory::orderBy('name')->paginate(10);
+        
+        $product_categories = ProductCategory::all();
+        $PRODUCT_CATEGORIES =[];
+        foreach ($product_categories as $product_category){
+
+                $main_category = ProductCategory::find($product_category->main_category);
+
+                if($main_category != NULL){
+                    $main_category_name = $main_category->name;
+                }
+                else{
+                    $main_category_name = NULL;
+                }
+
+                $productcategory = array(
+                    'id' => $product_category->id,
+                    'name' => $product_category->name,
+                    'description' => $product_category->description,
+                    'created_at'  =>  $product_category->created_at,
+                    'maincategory' => $main_category_name,
+        
+                );
+           
+                array_push($PRODUCT_CATEGORIES, $productcategory);
+
+        }
         
 
          //return response ()->json($product_categories);
         // return view('productcategories.index')->with('product_categories',$product_categories);
-         return $product_categories->toJson();
+         return $PRODUCT_CATEGORIES;
     }
 
     /**
@@ -95,11 +120,29 @@ class ProductCategoriesController extends Controller
      */
     public function show($id)
     {
-        //
-        $product_category = ProductCategory::find($id);
         //return response ()->json($event_categories);
         //return view('productcategories.show')->with('product_category',$product_category);
-        return $$product_category->toJson();
+       // return $product_category->toJson();
+        $product_category= ProductCategory::find($id);
+        
+       
+        $main_category = ProductCategory::find($product_category->main_category);
+        if($main_category != NULL){
+            $main_category_name = $main_category->name;
+        }
+        else{
+            $main_category_name = NULL;
+        }
+        $productcategory = [
+            'id' => $product_category->id,
+            'name' => $product_category->name,
+            'description' => $product_category->description,
+            'created_at'  =>  $product_category->created_at,
+            'maincategory' => $main_category_name,
+
+        ];
+       
+        return $productcategory;
 
     }
 
@@ -112,11 +155,27 @@ class ProductCategoriesController extends Controller
     public function edit($id)
     {
         //
-        $maincategories = ProductCategory::whereNull('main_category')->get();
+       // $maincategories = ProductCategory::whereNull('main_category')->get();
         $product_category= ProductCategory::find($id);
-       // return response ()->json($brands);
-        return view('productcategories.edit')->with('product_category',$product_category)->with('maincategories',$maincategories);;
+        //return view('productcategories.edit')->with('product_category',$product_category)->with('maincategories',$maincategories);;
+       
+        $main_category = ProductCategory::find($product_category->main_category);
+        if($main_category != NULL){
+            $main_category_name = $main_category->name;
+        }
+        else{
+            $main_category_name = NULL;
+        }
+        $productcategory = [
+            'id' => $product_category->id,
+            'name' => $product_category->name,
+            'description' => $product_category->description,
+            'created_at'  =>  $product_category->created_at,
+            'maincategory' => $main_category_name,
 
+        ];
+       
+        return $productcategory;
     }
 
     /**

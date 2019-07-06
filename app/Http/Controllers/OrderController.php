@@ -21,37 +21,40 @@ class OrderController extends Controller
        // return $orders ->toJson();
        $ORDERS = [];    
 
+       
        foreach($orders as $order) { 
+                     
+                    //getting names of each order item
+                    $i = 0; $name =[];
+                    foreach($order ->inventories as $inventory){
+                    $name[$i]= $inventory->product->name;
+                    $i++;
+                }
+         ///end names
 
-            $i = 0; $inv =[];
-            foreach($order ->inventories as $inventory){
-            $inv[$i]= $inventory->product->name;
-            $i++;
-         }
-                  
+          /// attributes in order_inventory mapping        
          $order_inventories = DB::table('order_inventory')->where('order_id',$order->id)->get();
          $j = 0;
-        $ord_inv =[]; 
-                foreach($order_inventories as $order_inventory){
-                    $k=0;
-                    $ord_inv =[$j,$k] = $order_inventory->quantity ; 
-                    $k++; 
-                    $ord_inv=[$j,$k] = $order_inventory->subTotal ;
-                    $k++; 
+         $ord_inv =[]; 
 
+                   foreach($order_inventories as $order_inventory){
+                    $inv = array(
+                        "quantity" => $order_inventory->quantity , 
+                        "subTotal" => $order_inventory->subTotal, 
+                        "name" => $name[$j]
+                    );
                     $j++;
-                }
+                    array_push($ord_inv, $inv);   //pushing subarray of items into main array of items
+                } //end foreach
         
-         $orderstatus=OrderStatus::find($order->status_id);
+          /// end order_inventory mapping  
+          
+         $orderstatus=OrderStatus::find($order->status_id);  //getting status of order
 
         $ord = array (
             'id' => $order->id,
             'user_name' => $order->user->name,
-            //info of each inventory item selected returned in a sub array that includes item name,quantity and subtotal
-            // 'products' => $inv,
-            // 'quantities' => $ord_inv_quantity,
-            // 'subtoal' => $ord_inv_subtotal,
-            'items' => $ord_inv,
+            'items' => $ord_inv, //items with with their subtotal and quantity(middle table attr)
             'date_of_order' => $order->date_of_order,
             'expected_delivery_date' => $order->expected_delivery_date,
             'total_cost' => $order ->total_cost,
@@ -63,15 +66,13 @@ class OrderController extends Controller
 
         array_push($ORDERS, $ord);
         $event = []; //empty it before next order
-        $ord_inv_quantity =[]; 
-        $ord_inv_subtotal =[];
-        
-
-   
-    } //end foreach
+        $ord_inv = []; 
+       // $name = [];
+    
+      } //end foreach
 
 
-   return $ORDERS;
+      return $ORDERS;
     }
 
     /**
@@ -122,23 +123,39 @@ class OrderController extends Controller
        $order->postal_code= '123';
        $order->save();  
        */
-// for api
-    //   $validatedData = $request->validate(['billing_address' => 'required',
-    //   'postal_code' => 'required']);
 
-      $order = Order::create([
-        'user_id' => '1','date_of_order' => '2019-06-30','expected_delivery_date' => '2019-06-30','total_cost'=>
-         '600', 'additional_info'=> 'mg','billing_address'=>'gmgh','postal_code'=>'5990','status_id'=>'1'
+       // for api
+        //   $validatedData = $request->validate(['billing_address' => 'required',
+       //   'postal_code' => 'required']);
+
+    //   $order = Order::create([
+    //     'user_id' => '1','date_of_order' => '2019-06-30','expected_delivery_date' => '2019-06-30','total_cost'=>
+    //      '600', 'additional_info'=> 'mg','billing_address'=>'gmgh','postal_code'=>'5990','status_id'=>'1'
+    //      ]);
+
+    $order = Order::create([
+        'user_id' => '1',
+        'date_of_order' => $request->input('date_of_order'),
+        'expected_delivery_date' => $request->input('expected_delivery_date'),
+        'total_cost'=> '600',
+        'additional_info'=> $request->input('additional_info'),
+        'billing_address'=>$request->input('billing_address'),
+        'postal_code'=>$request->input('postal_code'),
+        'status_id'=>'1'
          ]);
 
-        //inventory mapping
+
+        //inventory mapping 
        $orderinventories= $request->input('inventories');
-    
-       $orderinventory = Inventory::find($orderinventories);
 
-       //$order->inventories()->attach($orderinventory, array("quantity"=>2, "subTotal"=>1000));
-       $order->inventories()->save($orderinventory, ['order_id'=>$order->id,'quantity'=>2, 'subTotal'=>1000]);
+          foreach($orderinventories as $orderinventory )   { 
 
+            $orderinvent = Inventory::find($orderinventory->id);
+            //$order->inventories()->attach($orderinventory, array("quantity"=>2, "subTotal"=>1000));
+            $order->inventories()->save($orderinventory, ['order_id'=>$order->id,'inventory_item_id' =>$orderinventory->id ,'quantity'=>2, 'subTotal'=>1000]);
+          
+        }  //end for each
+             
         return response()->json('Order Placed!');
     }
 
@@ -150,10 +167,48 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        //
         $order = Order::find($id);
-        //return response() ->json($orders);
-        return $order ->toJson();
+          
+                    //getting names of each order item
+                    $i = 0; $name =[];
+                    foreach($order ->inventories as $inventory){
+                    $name[$i]= $inventory->product->name;
+                    $i++;
+                }
+         ///end names
+
+          /// attributes in order_inventory mapping        
+         $order_inventories = DB::table('order_inventory')->where('order_id',$order->id)->get();
+         $j = 0;
+         $ord_inv =[]; 
+         
+                   foreach($order_inventories as $order_inventory){
+                    $inv = array(
+                        "quantity" => $order_inventory->quantity , 
+                        "subTotal" => $order_inventory->subTotal, 
+                        "name" => $name[$j]
+                    );
+                    $j++;
+                    array_push($ord_inv, $inv);   //pushing subarray of items into main array of items
+                } //end foreach
+        
+          /// end order_inventory mapping  
+          
+         $orderstatus=OrderStatus::find($order->status_id);  //getting status of order
+
+        return [
+            'id' => $order->id,
+            'user_name' => $order->user->name,
+            'items' => $ord_inv, //items with with their subtotal and quantity(middle table attr)
+            'date_of_order' => $order->date_of_order,
+            'expected_delivery_date' => $order->expected_delivery_date,
+            'total_cost' => $order ->total_cost,
+            'additional info' => $order->additional_info,
+            'billing_address' => $order->billing_address,
+            'postal_code' => $order->postal_code,
+            'status' => $orderstatus->name,
+
+        ];
     
     }
 
@@ -166,9 +221,53 @@ class OrderController extends Controller
     public function edit($id)
     {
         //
-        $order= Order::find($id);
-       // return response ()->json($brands);
-        return view('orders.edit')->with('order',$order);
+                $order= Order::find($id);
+            // return response ()->json($brands);
+            
+            $order = Order::find($id);
+                
+            //getting names of each order item
+            $i = 0; $name =[];
+            foreach($order ->inventories as $inventory){
+            $name[$i]= $inventory->product->name;
+            $i++;
+        }
+        ///end names
+
+        /// attributes in order_inventory mapping        
+        $order_inventories = DB::table('order_inventory')->where('order_id',$order->id)->get();
+        $j = 0;
+        $ord_inv =[]; 
+
+            foreach($order_inventories as $order_inventory){
+
+            $inv = array(
+                "quantity" => $order_inventory->quantity , 
+                "subTotal" => $order_inventory->subTotal, 
+                "name" => $name[$j]
+            );
+            $j++;
+            array_push($ord_inv, $inv);   //pushing subarray of items into main array of items
+        } //end foreach
+
+        /// end order_inventory mapping  
+
+        $orderstatus=OrderStatus::find($order->status_id);  //getting status of order
+
+        return [
+        'id' => $order->id,
+        'user_name' => $order->user->name,
+        'items' => $ord_inv, //items with with their subtotal and quantity(middle table attr)
+        'date_of_order' => $order->date_of_order,
+        'expected_delivery_date' => $order->expected_delivery_date,
+        'total_cost' => $order ->total_cost,
+        'additional info' => $order->additional_info,
+        'billing_address' => $order->billing_address,
+        'postal_code' => $order->postal_code,
+        'status' => $orderstatus->name,
+
+        ];
+        //return view('orders.edit')->with('order',$order);
     }
 
     /**
@@ -180,11 +279,34 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
-        Order::find($id)->update(['user_id' => '1','date_of_order' => '2019-06-30','expected_delivery_date' => '2019-06-30','total_cost'=>
-        '600', 'additional_info'=> 'mg','billing_address'=>'gmghq','postal_code'=>'5990','status_id'=>'1'
-        ]);
+    
+
+        $order = Order::find($id)->update([
+            'user_id' => '1',
+            'date_of_order' => $request->input('date_of_order'),
+            'expected_delivery_date' => $request->input('expected_delivery_date'),
+            'total_cost'=> '600',
+            'additional_info'=> $request->input('additional_info'),
+            'billing_address'=>$request->input('billing_address'),
+            'postal_code'=>$request->input('postal_code'),
+            'status_id'=>'1'
+             ]);
+    
+    
+            //inventory mapping 
+           $orderinventories= $request->input('inventories');
+    
+              foreach($orderinventories as $orderinventory )   { 
+    
+                $orderinvent = Inventory::find($orderinventory->id);
+                //$order->inventories()->attach($orderinventory, array("quantity"=>2, "subTotal"=>1000));
+                $order->inventories()->save($orderinventory, ['order_id'=>$order->id,'inventory_item_id' =>$orderinventory->id ,'quantity'=>2, 'subTotal'=>1000]);
+              
+            }  //end for each
+    
         return response()->json('Order Updated!');
+
+        
     }
 
     /**

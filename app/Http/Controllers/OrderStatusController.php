@@ -86,7 +86,8 @@ class OrderStatusController extends Controller
     {
         //
         $orderstatus = OrderStatus::find($id);
-        return view('orderstatuses.edit')->with('orderstatus',$orderstatus);
+        return $orderstatus->toJson();
+        //return view('orderstatuses.edit')->with('orderstatus',$orderstatus);
     }
 
     /**

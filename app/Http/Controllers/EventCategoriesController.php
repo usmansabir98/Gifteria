@@ -15,7 +15,7 @@ class EventCategoriesController extends Controller
     public function index()
     {
         //
-        $event_categories = EventCategory::orderBy('name')->paginate(10);;
+        $event_categories = EventCategory::orderBy('name');
         
 
          return $event_categories-> toJson();
@@ -90,8 +90,8 @@ class EventCategoriesController extends Controller
     {
         //
         $event_category= EventCategory::find($id);
-       // return response ()->json($brands);
-        return view('eventcategories.edit')->with('event_category',$event_category);
+        //return view('eventcategories.edit')->with('event_category',$event_category);
+        return $event_category->toJson();
 
     }
 
