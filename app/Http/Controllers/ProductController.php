@@ -339,17 +339,57 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
+    { 
+         $product = Product::find($id);
+            ///event categories
+            $i = 0; $event =[];
+            foreach($product->eventCategories as $eventcategory){
+                $event[$i]= $eventcategory->name;
+                $i++;
+            }
+            
+            //cover image
+            $coverimage= '';
+            foreach($product ->productImages as $image){
+                if($image->cover_flag == 1)
+                $coverimage= $image->imageurl;
+            }
+             // image1
+             $image1= '';
+             foreach($product ->productImages as $image){
+                 if($image->cover_flag == 2)
+                 $coverimage= $image->imageurl;
+             }
+              // image2
+            $image2= '';
+            foreach($product ->productImages as $image){
+                if($image->cover_flag == 3)
+                $coverimage= $image->imageurl;
+            }
+             //image3
+             $image3= '';
+             foreach($product ->productImages as $image){
+                 if($image->cover_flag == 4)
+                 $image3= $image->imageurl;
+             }
+            
+            //array of each record
+            $pro =[
+                'id' => $product->id,
+                'name' => $product->name,
+                'description' =>$product->description,
+                'brand' => $product->brand->name,
+               
+                 // to fill with the photos,
+                 'event_category' => $event,
+                 'cover_image' => $coverimage,
+                 'image1' => $image1,
+                 'image2' => $image2,
+                 'image3' => $image3,
+                'product_category' => $product->productCategory->name
+            ];
 
-        $product_categories = ProductCategory::whereNotNULL('main_category')->get();
-        $brands = Brand::all();
-        $event_categories = EventCategory::all();
-        $product= Product::find($id);
-
-        return view('products.edit')->with('product',$product)->with('brands',$brands)->with('product_categories',$product_categories)->with('event_categories',$event_categories);
-        
-        
-       // return response ()->json($product);
+       return $pro;
      
     }
 
