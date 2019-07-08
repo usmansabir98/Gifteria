@@ -105,8 +105,8 @@ class BrandsController extends Controller
     {
         //
         $brand = Brand::find($id);
-       // return response ()->json($brands);
-        return view('brands.edit')->with('brand',$brand);
+         return response ()->json($brands);
+        //return view('brands.edit')->with('brand',$brand);
         
     }
 

@@ -101,8 +101,8 @@ class EventCategoriesController extends Controller
     {
         //
         $event_category= EventCategory::find($id);
-       // return response ()->json($brands);
-        return view('eventcategories.edit')->with('event_category',$event_category);
+        //return view('eventcategories.edit')->with('event_category',$event_category);
+        return $event_category->toJson();
 
     }
 

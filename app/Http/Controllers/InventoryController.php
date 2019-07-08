@@ -66,6 +66,7 @@ class InventoryController extends Controller
                 'price' => $inventory->price,
                 'batch_code' => $inventory->batch_code,
                 'is_expirable' => $inventory->is_expirable,'expiry_date' => $inventory->expiry_date,
+                
             );
 
             array_push($INVENTORIES, $inv);
@@ -204,9 +205,23 @@ class InventoryController extends Controller
     public function edit($id)
     {
         //
-        $products = Product::all();
-        $inventory_item = Inventory::find($id);
-        return view('inventory.edit')->with('inventory_item',$inventory_item)->with('products',$products);;
+        // $products = Product::all();
+        // $inventory_item = Inventory::find($id);
+        // return view('inventory.edit')->with('inventory_item',$inventory_item)->with('products',$products);
+
+        $inventory = Inventory::find($id);
+
+      
+        return [
+            'id' => $inventory->id,
+            'quantity' => $inventory->quantity,
+            'price' => $inventory->price,
+            'batch_code' => $inventory->batch_code,
+            'is_expirable' => $inventory->is_expirable,
+            'expiry_date' => $inventory->expiry_date,
+            'created_at' => $inventory->created_at
+        ];
+        
     }
 
     /**
