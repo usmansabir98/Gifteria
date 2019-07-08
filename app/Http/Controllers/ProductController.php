@@ -156,15 +156,18 @@ class ProductController extends Controller
 
         return redirect('/products')->with('success', 'Product Created');
          //return response ()->json($eventcategories);  */
-
-         $validatedData = $request->validate(['name' => 'required',
+           
+        $productcategory = ProductCategory::where('name',$request->input('productcategory'))->get();
+        $brand = Brand::where('name',$request->input('brand'))->get();
+        
+        $validatedData = $request->validate(['name' => 'required',
        'description' => 'required','brand' => 'required']);
 
        $product = Product::create([
         'name' => $validatedData['name'],
         'description' => $validatedData['description'],
-        'product_category_id' => $request->input('productcategory'),
-        'brand_id' => $validatedData['brand'],
+        'product_category_id' => $productcategory->id,
+        'brand_id' => $brand->id,
         'user_id' => '1'
         ]);
 
@@ -172,9 +175,12 @@ class ProductController extends Controller
       //event categories
        $eventcategories= $request->input('event_category');
 
-       $event_category = EventCategory::find($eventcategories);
 
-       $product->eventCategories()->attach($event_category);
+       foreach($eventcategories as $eventcategory) {
+            $event_category = EventCategory::where('name',$eventcategory)->get();
+
+            $product->eventCategories()->attach($event_category);
+       }
 
         //cover image in productImage table
        
@@ -411,12 +417,14 @@ class ProductController extends Controller
         // $product->brand_id = $request->input('brand');
         // $product->product_category_id = $request->input('productcategory');
         // $product->user_id = 1; 
+        $productcategory = ProductCategory::where('name',$request->input('productcategory'))->get();
+        $brand = Brand::where('name',$request->input('brand'))->get();
 
         Product::find($id)->update(['name' => $request->input('name'),'description' => $request->input('description'),
-        'product_category_id'=>$request->input('productcategory'),'brand_id'=>$request->input('brand'),'user_id'=>'1']);
+        'product_category_id'=>$productcategory->id,'brand_id'=>$brand->id,'user_id'=>'1']);
+        
         //get all event categories of a product to remove records in the middle table
         $event_categories = $product->eventCategories;
-
          foreach($event_categories as $eventcategory)
        {
         $event_category= EventCategory::find($eventcategory);
@@ -425,10 +433,11 @@ class ProductController extends Controller
 
        //adding new records in middle table
         $eventcategories= $request->input('event_category');
- 
-         $event_category = EventCategory::find($eventcategories);
- 
-         $product->eventCategories()->attach($event_category);
+
+        foreach($eventcategories as $eventcategory) {
+            $event_category = EventCategory::where('name',$eventcategory)->get();
+            $product->eventCategories()->attach($event_category);
+       }
 
          //cover image in productImage table
      
