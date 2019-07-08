@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use Yajra\Datatables\Datatables;
+
 
 use Illuminate\Http\Request;
 
@@ -15,11 +17,23 @@ class ProductCategoriesController extends Controller
     public function index()
     {
         //
-        $product_categories = ProductCategory::orderBy('name')->paginate(10);
+        $product_categories = ProductCategory::orderBy('name');
         
+        $data = Datatables::of($product_categories)
+                ->editColumn('name', '<a href="productcategory/{{$id}}">{{$name}}</a>')
+                ->toJson();
+
+         return $data;
 
          //return response ()->json($product_categories);
         // return view('productcategories.index')->with('product_categories',$product_categories);
+        //  return $product_categories->toJson();
+    }
+
+    public function all()
+    {
+        //
+        $product_categories = ProductCategory::orderBy('name')->get();
          return $product_categories->toJson();
     }
 
@@ -99,7 +113,7 @@ class ProductCategoriesController extends Controller
         $product_category = ProductCategory::find($id);
         //return response ()->json($event_categories);
         //return view('productcategories.show')->with('product_category',$product_category);
-        return $$product_category->toJson();
+        return $product_category->toJson();
 
     }
 

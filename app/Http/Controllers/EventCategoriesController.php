@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Yajra\Datatables\Datatables;
 
 use Illuminate\Http\Request;
 
@@ -15,11 +16,21 @@ class EventCategoriesController extends Controller
     public function index()
     {
         //
-        $event_categories = EventCategory::orderBy('name')->paginate(10);;
+        $event_categories = EventCategory::orderBy('name');
         
+        $data = Datatables::of($event_categories)
+                ->editColumn('name', '<a href="eventcategory/{{$id}}">{{$name}}</a>')
+                ->toJson();
 
-         return $event_categories-> toJson();
+         return $data;
          //return view('eventcategories.index')->with('event_categories',$event_categories);
+    }
+
+    public function all()
+    {
+        //
+        $event_categories = EventCategory::orderBy('name')->get();
+         return $event_categories->toJson();
     }
 
     /**

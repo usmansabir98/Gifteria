@@ -15,7 +15,9 @@
 //     return view('welcome');
 // });
 
-Route::view('/{path?}', 'app');
+Route::view('/{path?}/{name?}/{p?}/{t?}', 'app');
+// Route::view('/', 'app');
+// Route::view('/admin/*', 'app');
 
 
 

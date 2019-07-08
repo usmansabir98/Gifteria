@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Yajra\Datatables\Datatables;
 
 use Illuminate\Http\Request;
 use App\Brand;
@@ -15,11 +16,22 @@ class BrandsController extends Controller
     public function index()
     {
         //
-        $brands = Brand::orderBy('name')->paginate(10);;
+        $brands = Brand::orderBy('name');
         
+        $data = Datatables::of($brands)
+                ->editColumn('name', '<a href="brand/{{$id}}">{{$name}}</a>')
+                ->toJson();
 
-         return $brands->toJson();
+        return $data;
+        //  return $brands->toJson();
         // return view('brands.index')->with('brands',$brands);
+    }
+
+    public function all()
+    {
+        //
+        $brands = Brand::orderBy('name')->get();
+         return $brands->toJson();
     }
 
     /**

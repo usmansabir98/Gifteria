@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 // Route::get('/projects', 'ProjectController@index');
 // Route::post('/projects', 'ProjectController@store');
@@ -31,13 +31,19 @@ Route::get('/', 'PagesController@index');
 
 Route::resource('brands', 'BrandsController');
 Route::get('brands/{id}/delete', 'BrandsController@destroy');
+Route::get('all/brands', 'BrandsController@all');
+
 
 // Route::get('brands', 'BrandsController@index');
 // Route::get('brands/{id}', 'BrandsControllerController@show');
 Route::resource('eventcategories', 'EventCategoriesController');
 Route::get('eventcategories/{id}/delete', 'EventCategoriesController@destroy');
+Route::get('all/eventcategories', 'EventCategoriesController@all');
+
 Route::resource('productcategories', 'ProductCategoriesController');
 Route::get('productcategories/{id}/delete', 'ProductCategoriesController@destroy');
+Route::get('all/productcategories', 'ProductCategoriesController@all');
+
 Route::resource('products', 'ProductController');
 Route::get('products/{id}/delete', 'ProductController@destroy');
 Route::resource('inventory', 'InventoryController');

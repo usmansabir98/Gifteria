@@ -50,7 +50,7 @@ class ProductController extends Controller
             //array of each record
             $pro = array (
                 'id' => $product->id,
-                'name' => '<a href="products/'.$product->id.'">'.$product->name.'</a>',
+                'name' => '<a class="nav-link" href="product/'.$product->id.'">'.$product->name.'</a>',
                 'brand' => $product->brand_name,
                  // to fill with the photos,
                  'event_category' => $event,
