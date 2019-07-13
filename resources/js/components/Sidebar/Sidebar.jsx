@@ -24,6 +24,7 @@ class Sidebar extends Component {
     window.addEventListener("resize", this.updateDimensions.bind(this));
   }
   render() {
+    console.log(this.props.match.path);
     const sidebarBackground = {
       backgroundImage: "url(" + this.props.image + ")"
     };
@@ -52,14 +53,15 @@ class Sidebar extends Component {
             href="https://www.creative-tim.com?ref=lbd-sidebar"
             className="simple-text logo-normal"
           >
-            Creative Tim
+            Gifteria
           </a>
         </div>
         <div className="sidebar-wrapper">
           <ul className="nav">
             {this.state.width <= 991 ? <AdminNavbarLinks /> : null}
             {this.props.routes.map((prop, key) => {
-              if (!prop.redirect)
+              if(prop.invisible) return null;
+              if (!prop.redirect && this.props.match.path==prop.layout)
                 return (
                   <li
                     className={

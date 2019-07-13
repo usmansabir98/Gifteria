@@ -13,6 +13,17 @@ import Maps from "./views/Maps.jsx";
 import Notifications from "./views/Notifications.jsx";
 import Upgrade from "./views/Upgrade.jsx";
 
+import Product from "./views/Product.jsx";
+import ImageUpload from "./views/ImageUpload.jsx";
+import BrandCreate from "./views/BrandCreate.jsx";
+import Brand from "./views/Brand.jsx";
+import EventCategory from "./views/EventCategory.jsx";
+import ProductCategory from "./views/ProductCategory.jsx";
+import UserHome from "./views/UserHome.jsx";
+import UserCart from "./views/UserCart.jsx";
+import UserProductDetails from "./views/UserProductDetails.jsx";
+
+
 const dashboardRoutes = [
   {
     path: "/dashboard",
@@ -21,13 +32,13 @@ const dashboardRoutes = [
     component: Dashboard,
     layout: "/admin"
   },
-  {
-    path: "/user",
-    name: "User Profile",
-    icon: "pe-7s-user",
-    component: UserProfile,
-    layout: "/admin"
-  },
+  // {
+  //   path: "/user",
+  //   name: "User Profile",
+  //   icon: "pe-7s-user",
+  //   component: UserProfile,
+  //   layout: "/admin"
+  // },
   // {
   //   path: "/table",
   //   name: "Table List",
@@ -70,6 +81,72 @@ const dashboardRoutes = [
     component: ProductCategories,
     layout: "/admin"
   },
+  {
+    path: "/product/:id",
+    component: Product,
+    layout: "/admin",
+    invisible: true
+  },
+
+  {
+    path: "/image",
+    component: ImageUpload,
+    layout: "/admin",
+    invisible: true
+  },
+
+  {
+    path: "/brand/create",
+    component: BrandCreate,
+    layout: "/admin",
+    invisible: true
+  },
+
+  {
+    path: "/brand/:id",
+    component: Brand,
+    layout: "/admin",
+    invisible: true
+  },
+
+  {
+    path: "/eventcategory/:id",
+    component: EventCategory,
+    layout: "/admin",
+    invisible: true
+  },
+
+  {
+    path: "/productcategory/:id",
+    component: ProductCategory,
+    layout: "/admin",
+    invisible: true
+  },
+
+  {
+    path: "/home",
+    name: "Home",
+    icon: "pe-7s-home",
+    component: UserHome,
+    layout: "/user"
+  },
+
+  {
+    path: "/cart",
+    name: "Cart",
+    icon: "pe-7s-cart",
+    component: UserCart,
+    layout: "/user"
+  },
+
+  {
+    path: "/product/:id",
+    name: "Product Details",
+    icon: "pe-7s-cart",
+    component: UserProductDetails,
+    layout: "/user",
+    invisible:true
+  },
   // {
   //   path: "/typography",
   //   name: "Typography",
@@ -77,13 +154,14 @@ const dashboardRoutes = [
   //   component: Typography,
   //   layout: "/admin"
   // },
-  // {
-  //   path: "/icons",
-  //   name: "Icons",
-  //   icon: "pe-7s-science",
-  //   component: Icons,
-  //   layout: "/admin"
-  // },
+  {
+    path: "/icons",
+    name: "Icons",
+    icon: "pe-7s-science",
+    component: Icons,
+    layout: "/admin",
+    invisible: true
+  }
   // {
   //   path: "/maps",
   //   name: "Maps",
@@ -91,13 +169,13 @@ const dashboardRoutes = [
   //   component: Maps,
   //   layout: "/admin"
   // },
-  {
-    path: "/notifications",
-    name: "Notifications",
-    icon: "pe-7s-bell",
-    component: Notifications,
-    layout: "/admin"
-  }
+  // {
+  //   path: "/notifications",
+  //   name: "Notifications",
+  //   icon: "pe-7s-bell",
+  //   component: Notifications,
+  //   layout: "/admin"
+  // }
   
   // {
   //   upgrade: true,

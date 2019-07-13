@@ -1,6 +1,11 @@
 /*
  * Table styles
  */
+
+ .card.content{
+  padding: 15px;
+}
+
 table.dataTable {
   width: 100%;
   margin: 0 auto;

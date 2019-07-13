@@ -12,23 +12,31 @@ $.DataTable = require('datatables.net');
 
 class InventoryList extends Component {
   componentDidMount(){
-    this.$el = $(this.el);
-    this.$el.DataTable(
-      {
-        data: tdArray,
-        columns: [
-            { title: "ID" },
-            { title: "Name" },
-            { title: "Salary" },
-            { title: "Country" },
-            { title: "City" }
-        ]
-    }
-    )
+    axios.get('/api/inventory').then(response => {
+        this.setState({
+          products: response.data
+        });
+        console.log(response);
+        this.$el = $(this.el);
+      this.$el.DataTable(
+        {
+          data: this.state.products,
+          columns: [
+              { title: "ID", data: 'id' },
+              { title: "Batch Code", data: 'batch_code' },
+              { title: "Quantity", data: 'quantity' },
+              { title: "Price", data: 'price' },
+              { title: "Brand", data: 'brand' },
+            { title: "Product Category", data: 'product_category' },
+            { title: "Event Category", data: 'event_category' }
+          ]
+      }
+      )
+      });
   }
 
   componentWillUnmount(){
-
+    this.$el.DataTable().destroy(true);
   }
 
   render() {
@@ -44,7 +52,7 @@ class InventoryList extends Component {
                 ctTableResponsive
                 content={
 
-                  <table id="products" class="display" width="100%" ref = { el => this.el=el }>
+                  <table id="inventory" className="display" width="100%" ref = { el => this.el=el }>
 
                   </table>
                   // <Table striped hover>

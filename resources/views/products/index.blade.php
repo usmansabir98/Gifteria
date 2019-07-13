@@ -8,16 +8,11 @@
 
      <div class="row">
         <div class="col-md-4 col-sm-4">
-
                 @foreach($product->productImages as $productImage) 
                 @if($productImage->cover_flag == 1) 
                 <img style="width:100%" src="/storage/cover_images/{{$productImage->imageurl}}"> 
                 @endif
                 @endforeach
-
-                
-
-
         </div>
 
 
