@@ -181,8 +181,8 @@ class User extends Component {
             bgImage={this.state["image"]}
             mini={this.state["mini"]}
             handleFixedClick={this.handleFixedClick}
-            fixedClasses={this.state.fixedClasses} */}
-          />
+            fixedClasses={this.state.fixedClasses}
+          /> */}
         </div>
       </div>
     );
