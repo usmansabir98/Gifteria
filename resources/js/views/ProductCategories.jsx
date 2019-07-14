@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Grid, Row, Col, Table } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
 import axios from 'axios';
 
 import Card from "../components/Card/Card.jsx";
@@ -70,15 +72,21 @@ class ProductCategories extends Component {
           <Row>
             <Col md={12}>
               <Card
-                title="Striped Table with Hover"
-                category="Here is a subtitle for this table"
+                title="Product Categories"
+                category="List of all product categories"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
 
-                  <table id="brands" className="display" width="100%" ref = { el => this.el=el }>
+                  // <table id="brands" className="display" width="100%" ref = { el => this.el=el }>
 
-                  </table>
+                  // </table>
+                  <div style={{padding: '20px'}}>
+                    <Link to='/admin/productcategory/create'><i className='pe-7s-plus' style={{fontSize: '44px', float: 'right', marginBottom: '20px'}} /></Link>
+                    <table id="productcategories" className="display" width="100%" ref = { el => this.el=el }>
+
+                    </table>
+                  </div>
             
                 }
               />

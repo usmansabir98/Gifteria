@@ -17,6 +17,8 @@ class EventCategory extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+
   }
 
   componentDidMount(){
@@ -30,6 +32,14 @@ class EventCategory extends Component {
     });
   }
 
+  handleClick(e){
+    if(e.target.id==='delete'){
+        axios.get(`/api/eventcategories/${this.state.id}/delete`)
+        .then(res => {
+            console.log(res);
+        });
+    }
+  }
 
   handleChange(e){
       console.log(e.target.name);
@@ -51,6 +61,8 @@ class EventCategory extends Component {
    });
 
       e.preventDefault();
+      this.props.history.push('/admin/eventcategories');
+
   }
 
   render() {
@@ -94,7 +106,7 @@ class EventCategory extends Component {
                         </FormGroup>
 
                         <Button type="submit">Update</Button>
-
+                        {/* <Button id="delete" className="btn btn-danger" onClick={this.handleClick}>Delete</Button> */}
 
                     </form>
                 }

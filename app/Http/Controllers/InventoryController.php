@@ -56,7 +56,8 @@ class InventoryController extends Controller
             //array of each record
             $inv = array (
                 'id' => $inventory->id,
-                'name' => $name = $INV->name,
+                // 'name' => $name = $INV->name,
+                'name' => '<a class="nav-link" href="item/'.$inventory->id.'">'.$INV->name.'</a>',
                 'brand' => $inventory->brand_name,
                  // to fill with the photos,
                  'event_category' => $event,
@@ -134,7 +135,7 @@ class InventoryController extends Controller
         'batch_code' => $validatedData['batchcode'],
         'expiry_date' => $request->input('expirydate'),
         'price' => $validatedData['price'],
-        'product_id' => $request->input('product'),
+        'product_id' => $request->input('product_id'),
         'quantity' => $validatedData['quantity'],
         'is_expirable' => $validatedData['isexpirable'],
        
@@ -211,9 +212,10 @@ class InventoryController extends Controller
 
         $inventory = Inventory::find($id);
 
-      
+
         return [
             'id' => $inventory->id,
+            'name' => $inventory->product->name,
             'quantity' => $inventory->quantity,
             'price' => $inventory->price,
             'batch_code' => $inventory->batch_code,
@@ -247,11 +249,10 @@ class InventoryController extends Controller
          return redirect('/inventory')->with('success', 'Inventory item Updated'); */
 
          Inventory::find($id)->update([
-            'batch_code' => $request->input('batchcode'),
-            'expiry_date' => $request->input('expirydate'),
-            'price' => $$request->input('price'),
-            'product_id' => $request->input('product'),
-            'quantity' =>$request->input('quantity'),
+            'is_expirable' => $request->input('is_expirable'),
+            'expiry_date' => $request->input('expiry_date'),
+            'price' => $request->input('price'),
+            'quantity' =>$request->input('quantity')
            
             ]);
 

@@ -14,11 +14,18 @@ import Notifications from "./views/Notifications.jsx";
 import Upgrade from "./views/Upgrade.jsx";
 
 import Product from "./views/Product.jsx";
+import ProductCreate from "./views/ProductCreate.jsx";
 import ImageUpload from "./views/ImageUpload.jsx";
 import BrandCreate from "./views/BrandCreate.jsx";
 import Brand from "./views/Brand.jsx";
 import EventCategory from "./views/EventCategory.jsx";
+import EventCategoryCreate from "./views/EventCategoryCreate.jsx";
 import ProductCategory from "./views/ProductCategory.jsx";
+import ProductCategoryCreate from "./views/ProductCategoryCreate.jsx";
+import Inventory from "./views/Inventory.jsx";
+import InventoryCreate from "./views/InventoryCreate.jsx";
+
+
 import UserHome from "./views/UserHome.jsx";
 import UserCart from "./views/UserCart.jsx";
 import UserProductDetails from "./views/UserProductDetails.jsx";
@@ -81,6 +88,13 @@ const dashboardRoutes = [
     component: ProductCategories,
     layout: "/admin"
   },
+
+  {
+    path: "/product/create",
+    component: ProductCreate,
+    layout: "/admin",
+    invisible: true
+  },
   {
     path: "/product/:id",
     component: Product,
@@ -110,6 +124,20 @@ const dashboardRoutes = [
   },
 
   {
+    path: "/eventcategory/create",
+    component: EventCategoryCreate,
+    layout: "/admin",
+    invisible: true
+  },
+
+  {
+    path: "/productcategory/create",
+    component: ProductCategoryCreate,
+    layout: "/admin",
+    invisible: true
+  },
+
+  {
     path: "/eventcategory/:id",
     component: EventCategory,
     layout: "/admin",
@@ -122,6 +150,22 @@ const dashboardRoutes = [
     layout: "/admin",
     invisible: true
   },
+
+  {
+    path: "/item/create",
+    component: InventoryCreate,
+    layout: "/admin",
+    invisible: true
+  },
+
+  {
+    path: "/item/:id",
+    component: Inventory,
+    layout: "/admin",
+    invisible: true
+  },
+
+  
 
   {
     path: "/home",

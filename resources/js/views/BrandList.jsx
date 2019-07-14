@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { Grid, Row, Col, Table } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
 import axios from 'axios';
 
 import Card from "../components/Card/Card.jsx";
-import { thArray, tdArray } from "../variables/Variables.jsx";
 
 import "./css/jquery.dataTables.css";
 
@@ -69,15 +70,18 @@ class BrandList extends Component {
           <Row>
             <Col md={12}>
               <Card
-                title="Striped Table with Hover"
-                category="Here is a subtitle for this table"
+                title="Brands"
+                category="List of all the brands"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
 
-                  <table id="brands" className="display" width="100%" ref = { el => this.el=el }>
+                  <div style={{padding: '20px'}}>
+                    <Link to='/admin/brand/create'><i className='pe-7s-plus' style={{fontSize: '44px', float: 'right', marginBottom: '20px'}} /></Link>
+                    <table id="brands" className="display" width="100%" ref = { el => this.el=el }>
 
-                  </table>
+                    </table>
+                  </div>
             
                 }
               />

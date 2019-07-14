@@ -177,7 +177,8 @@ return [
       
             Collective\Html\HtmlServiceProvider::class,
             Unisharp\Ckeditor\ServiceProvider::class,
-        
+            // Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+            Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 
     ],
 
@@ -230,6 +231,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
 
     ],
 

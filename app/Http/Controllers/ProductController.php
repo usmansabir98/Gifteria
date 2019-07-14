@@ -19,7 +19,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $products  = Product::join('brands', 'products.brand_id', '=', 'brands.id')
             ->join('product_categories', 'products.product_category_id', '=', 'product_categories.id')
@@ -46,11 +46,20 @@ class ProductController extends Controller
                 if($image->cover_flag == 1)
                 $coverimage= $image->imageurl;
             }
-            
+
+            $product_name = '';
+            if($request->edit){
+                $product_name = $product->name;
+            }
+            else{
+                $product_name = '<a class="nav-link" href="product/'.$product->id.'">'.$product->name.'</a>';
+            }
+
             //array of each record
             $pro = array (
                 'id' => $product->id,
-                'name' => '<a class="nav-link" href="product/'.$product->id.'">'.$product->name.'</a>',
+                // 'name' => '<a class="nav-link" href="product/'.$product->id.'">'.$product->name.'</a>',
+                'name' => $product_name,
                 'brand' => $product->brand_name,
                  // to fill with the photos,
                  'event_category' => $event,
@@ -157,7 +166,7 @@ class ProductController extends Controller
         return redirect('/products')->with('success', 'Product Created');
          //return response ()->json($eventcategories);  */
            
-        $productcategory = ProductCategory::where('name',$request->input('productcategory'))->get();
+        $productcategory = ProductCategory::where('name',$request->input('product_category'))->get();
         $brand = Brand::where('name',$request->input('brand'))->get();
         
         $validatedData = $request->validate(['name' => 'required',
@@ -166,8 +175,8 @@ class ProductController extends Controller
        $product = Product::create([
         'name' => $validatedData['name'],
         'description' => $validatedData['description'],
-        'product_category_id' => $productcategory->id,
-        'brand_id' => $brand->id,
+        'product_category_id' => $productcategory[0]->id,
+        'brand_id' => $brand[0]->id,
         'user_id' => '1'
         ]);
 
@@ -179,7 +188,7 @@ class ProductController extends Controller
        foreach($eventcategories as $eventcategory) {
             $event_category = EventCategory::where('name',$eventcategory)->get();
 
-            $product->eventCategories()->attach($event_category);
+            $product->eventCategories()->attach($event_category[0]);
        }
 
         //cover image in productImage table
@@ -409,19 +418,24 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-     
+        // echo $id;
+        // return response()->json($request);
         $product = Product::find($id);
+        // return response()->json($product->eventCategories);
+        
         // $product->name = $request->input('name');
        
         //  $product->description = $request->input('description');
         // $product->brand_id = $request->input('brand');
         // $product->product_category_id = $request->input('productcategory');
         // $product->user_id = 1; 
-        $productcategory = ProductCategory::where('name',$request->input('productcategory'))->get();
+        $productcategory = ProductCategory::where('name',$request->input('product_category'))->get();
+    //   return response()->json($productcategory[0]);
+
         $brand = Brand::where('name',$request->input('brand'))->get();
 
         Product::find($id)->update(['name' => $request->input('name'),'description' => $request->input('description'),
-        'product_category_id'=>$productcategory->id,'brand_id'=>$brand->id,'user_id'=>'1']);
+        'product_category_id'=>$productcategory[0]->id,'brand_id'=>$brand[0]->id,'user_id'=>'1']);
         
         //get all event categories of a product to remove records in the middle table
         $event_categories = $product->eventCategories;
@@ -439,10 +453,13 @@ class ProductController extends Controller
             $product->eventCategories()->attach($event_category);
        }
 
+    //   return response()->json('Product Updated!');
+
          //cover image in productImage table
      
         // Handle File Upload
         if($request->hasFile('cover_image')){
+
          // Get filename with the extension
          $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
          // Get just filename

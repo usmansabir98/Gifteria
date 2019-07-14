@@ -31,6 +31,8 @@ class Product extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+
   }
 
   componentDidMount(){
@@ -85,8 +87,13 @@ class Product extends Component {
     });
   }
 
-  componentWillUnmount(){
-    
+  handleClick(e){
+    if(e.target.id==='delete'){
+        axios.get(`/api/products/${this.state.id}/delete`)
+        .then(res => {
+            console.log(res);
+        });
+    }
   }
 
   handleChange(e){
@@ -135,6 +142,8 @@ class Product extends Component {
       });
 
       e.preventDefault();
+      this.props.history.push('/admin/products');
+
   }
 
   render() {
@@ -252,7 +261,7 @@ class Product extends Component {
 
 
                         <Button type="submit">Update</Button>
-
+                        <Button id="delete" className="btn btn-danger" onClick={this.handleClick}>Delete</Button>
 
                     </form>
                 }

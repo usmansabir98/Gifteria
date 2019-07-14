@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Grid, Row, Col, Table } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import Card from "../components/Card/Card.jsx";
-import { thArray, tdArray } from "../variables/Variables.jsx";
 
 import "./css/jquery.dataTables.css";
 
@@ -24,6 +24,7 @@ class InventoryList extends Component {
           columns: [
               { title: "ID", data: 'id' },
               { title: "Batch Code", data: 'batch_code' },
+              { title: "Product Name", data: 'name' },
               { title: "Quantity", data: 'quantity' },
               { title: "Price", data: 'price' },
               { title: "Brand", data: 'brand' },
@@ -46,35 +47,21 @@ class InventoryList extends Component {
           <Row>
             <Col md={12}>
               <Card
-                title="Striped Table with Hover"
-                category="Here is a subtitle for this table"
+                title="Inventory"
+                category="List of all inventory items"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
 
-                  <table id="inventory" className="display" width="100%" ref = { el => this.el=el }>
+                  // <table id="inventory" className="display" width="100%" ref = { el => this.el=el }>
 
-                  </table>
-                  // <Table striped hover>
-                  //   <thead>
-                  //     <tr>
-                  //       {thArray.map((prop, key) => {
-                  //         return <th key={key}>{prop}</th>;
-                  //       })}
-                  //     </tr>
-                  //   </thead>
-                  //   <tbody>
-                  //     {tdArray.map((prop, key) => {
-                  //       return (
-                  //         <tr key={key}>
-                  //           {prop.map((prop, key) => {
-                  //             return <td key={key}>{prop}</td>;
-                  //           })}
-                  //         </tr>
-                  //       );
-                  //     })}
-                  //   </tbody>
-                  // </Table>
+                  // </table>
+                  <div style={{padding: '20px'}}>
+                    <Link to='/admin/item/create'><i className='pe-7s-plus' style={{fontSize: '44px', float: 'right', marginBottom: '20px'}} /></Link>
+                    <table id="inventory" className="display" width="100%" ref = { el => this.el=el }>
+
+                    </table>
+                  </div>
                 }
               />
             </Col>

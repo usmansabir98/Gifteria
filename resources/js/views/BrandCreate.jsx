@@ -40,6 +40,8 @@ class BrandCreate extends Component {
    });
 
       e.preventDefault();
+      this.props.history.push('/admin/brands');
+
   }
 
   render() {

@@ -51,6 +51,7 @@ class ProductCategory extends Component {
    });
 
       e.preventDefault();
+      this.props.history.push('/admin/productcategories');
   }
 
   render() {
