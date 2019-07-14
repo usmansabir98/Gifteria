@@ -10,28 +10,49 @@ class ProductProvider extends Component {
         this.state = {
             products: storeProducts,
             detailProduct: detailProduct,
-            cart: []
+            cart: [],
+            cartSubtotal: 0,
+            cartTax: 0,
+            cartTotal: 0
         }
 
         this.handleDetail = this.handleDetail.bind(this);
         this.addToCart = this.addToCart.bind(this);
         this.removeFromCart = this.removeFromCart.bind(this);
+        this.decrement = this.decrement.bind(this);
+        this.increment = this.increment.bind(this);
+        this.addTotals = this.addTotals.bind(this);
 
     }
 
     componentDidMount(){
-
-        axios.get('/api/products').then(res => {
+        if(localStorage["cart"]==undefined)
+            localStorage["cart"] = JSON.stringify([]);
+        axios.get('/api/inventory').then(res => {
            let products = [];
+           let cart = localStorage["cart"];
+           cart = JSON.parse(cart);
 
            res.data.map(product=>{
-               products.push({...product, inCart: false, count: 0, total: 0})
+                let inCart = false;
+                let p = cart.find(item => {
+                    return item.id == product.id
+                });
+                if(p){
+                    inCart = p.inCart;
+                }
+               products.push({...product, inCart: inCart, count: 0, total: 0})
            });
+
+           
            this.setState(
             {
-               products:products
+               products: products,
+               cart: cart
             },
-            ()=>{console.log(this.state.products)}
+            ()=>{
+            this.addTotals();
+            }
         ) 
         });
 
@@ -47,31 +68,97 @@ class ProductProvider extends Component {
         var cart = this.state.cart.filter(x => {
             return x.id != id;
           })
+
+        let products = this.state.products.map(product=> {
+            if(product.id==id){
+                product.inCart = false;
+                product.count = 0;
+                product.total = 0;
+            }
+            return product;
+        });
         
-        this.setState({cart: cart}, ()=>console.log(this.state.cart));
+        this.setState({products: products, cart: cart}, ()=>{
+            console.log(this.state.cart);
+            localStorage["cart"] = JSON.stringify(this.state.cart);
+            this.addTotals();
+
+        });
     }
     
     addToCart(id){
         console.log("hello from add to cart: ", id);
-        let product = this.state.products.find(item => item.id === id);
-        let cart = this.state.cart;
-        cart.push(product);
-        this.setState({cart: cart}, ()=>console.log(this.state.cart));
+        // let product = this.state.products.find(item => item.id === id);
+        let cart = [...this.state.cart];
+        // cart.push(product);
+        // this.setState({cart: cart}, ()=>console.log(this.state.cart));
 
         let products = this.state.products.map(product=> {
             if(product.id==id){
                 product.inCart = true;
+                product.count = 1;
+                product.total = product.price;
+                cart.push(product);
             }
             return product;
         });
 
-        this.setState({products: products});
+        this.setState({products: products, cart: cart}, ()=>{
+            localStorage["cart"] = JSON.stringify(this.state.cart);
+            this.addTotals();
+        });
+    }
+
+    increment(id){
+        // console.log('increment');
+        let cart = [...this.state.cart];
+        let item = cart.find(i => {return i.id===id});
+        let index = cart.indexOf(item);
+        const product = cart[index];
+        product.count += 1;
+        product.total = product.count * product.price;
+
+        this.setState({cart: [...cart]}, ()=>{
+            localStorage["cart"] = JSON.stringify(this.state.cart);
+            this.addTotals();
+        });
+    }
+
+    decrement(id){
+        // console.log('decrement');
+        let cart = [...this.state.cart];
+        let item = cart.find(i => {return i.id===id});
+        let index = cart.indexOf(item);
+        const product = cart[index];
+        product.count -= 1;
+
+        if (product.count===0) {
+            this.removeFromCart(id);
+        } else {
+            product.total = product.count * product.price;    
+            this.setState({cart: [...cart]}, ()=>{
+                localStorage["cart"] = JSON.stringify(this.state.cart);
+                this.addTotals();
+            });        
+        }
+        
+    }
+
+    addTotals(){
+        let subTotal = 0;
+        this.state.cart.map(item => {subTotal+=item.total});
+        let tax = subTotal*0.17;
+        tax = parseFloat(tax.toFixed(2));
+        let total = subTotal + tax;
+
+        this.setState({cartSubtotal: subTotal, cartTax: tax, cartTotal: total});
     }
 
     render() {
         return (
             <ProductContext.Provider value={
-                {...this.state, handleDetail: this.handleDetail, addToCart: this.addToCart, removeFromCart: this.removeFromCart}
+                {...this.state, handleDetail: this.handleDetail, addToCart: this.addToCart, 
+                    removeFromCart: this.removeFromCart, increment: this.increment, decrement: this.decrement}
                 }>
                 {this.props.children}
             </ProductContext.Provider>

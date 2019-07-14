@@ -13,7 +13,7 @@ class UserProduct extends Component {
             <ProductWrapper className="col-9 mx-auto col-md-6 col-lg-3 my-3">
                 <div className="card">
                     <div className="img-container p-5">
-                        <Link to={'product/'+id}>
+                        <Link to={'item/'+id}>
                             <img src={'../storage/cover_images/'+cover_image} alt="image" className="card-img-top img-responsive" />
                         </Link>
                         

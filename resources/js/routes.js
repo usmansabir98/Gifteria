@@ -184,7 +184,7 @@ const dashboardRoutes = [
   },
 
   {
-    path: "/product/:id",
+    path: "/item/:id",
     name: "Product Details",
     icon: "pe-7s-cart",
     component: UserProductDetails,
