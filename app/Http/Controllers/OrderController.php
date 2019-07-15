@@ -41,7 +41,8 @@ class OrderController extends Controller
                     $inv = array(
                         "quantity" => $order_inventory->quantity , 
                         "subTotal" => $order_inventory->subTotal, 
-                        "name" => $name[$j]
+                        "name" => $name[$j],
+                        "inventory_item_id" => $order_inventory->inventory_item_id,
                     );
                     $j++;
                     array_push($ord_inv, $inv);   //pushing subarray of items into main array of items
@@ -54,7 +55,7 @@ class OrderController extends Controller
         $ord = array (
             'id' => $order->id,
             'user_name' => $order->user->name,
-            'items' => $ord_inv, //items with with their subtotal and quantity(middle table attr)
+            'items' => $ord_inv, //items with with their subtotal and quantity and inventoryitemid(middle table attr)
             'date_of_order' => $order->date_of_order,
             'expected_delivery_date' => $order->expected_delivery_date,
             'total_cost' => $order ->total_cost,
@@ -186,7 +187,8 @@ class OrderController extends Controller
                     $inv = array(
                         "quantity" => $order_inventory->quantity , 
                         "subTotal" => $order_inventory->subTotal, 
-                        "name" => $name[$j]
+                        "name" => $name[$j],
+                        "inventory_item_id" => $order_inventory->inventory_item_id,
                     );
                     $j++;
                     array_push($ord_inv, $inv);   //pushing subarray of items into main array of items
@@ -199,7 +201,7 @@ class OrderController extends Controller
         return [
             'id' => $order->id,
             'user_name' => $order->user->name,
-            'items' => $ord_inv, //items with with their subtotal and quantity(middle table attr)
+            'items' => $ord_inv, //items with with their subtotal and quantity inventoryitemid(middle table attr)
             'date_of_order' => $order->date_of_order,
             'expected_delivery_date' => $order->expected_delivery_date,
             'total_cost' => $order ->total_cost,
@@ -244,7 +246,8 @@ class OrderController extends Controller
             $inv = array(
                 "quantity" => $order_inventory->quantity , 
                 "subTotal" => $order_inventory->subTotal, 
-                "name" => $name[$j]
+                "name" => $name[$j],
+                "inventory_item_id" => $order_inventory->inventory_item_id,
             );
             $j++;
             array_push($ord_inv, $inv);   //pushing subarray of items into main array of items
@@ -257,7 +260,7 @@ class OrderController extends Controller
         return [
         'id' => $order->id,
         'user_name' => $order->user->name,
-        'items' => $ord_inv, //items with with their subtotal and quantity(middle table attr)
+        'items' => $ord_inv, //items with with their subtotal and quantity and inventoryitemid(middle table attr)
         'date_of_order' => $order->date_of_order,
         'expected_delivery_date' => $order->expected_delivery_date,
         'total_cost' => $order ->total_cost,
