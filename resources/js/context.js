@@ -22,6 +22,7 @@ class ProductProvider extends Component {
         this.decrement = this.decrement.bind(this);
         this.increment = this.increment.bind(this);
         this.addTotals = this.addTotals.bind(this);
+        this.clearCart = this.clearCart.bind(this);
 
     }
 
@@ -154,10 +155,28 @@ class ProductProvider extends Component {
         this.setState({cartSubtotal: subTotal, cartTax: tax, cartTotal: total});
     }
 
+    clearCart(){
+        let cart = [];
+        // cart.push(product);
+        // this.setState({cart: cart}, ()=>console.log(this.state.cart));
+
+        let products = this.state.products.map(product=> {
+            product.inCart = false;
+            product.count = 0;
+            product.total = 0;
+            return product;
+        });
+
+        this.setState({products: products, cart: cart}, ()=>{
+            localStorage["cart"] = JSON.stringify(this.state.cart);
+            this.addTotals();
+        });
+    }
+
     render() {
         return (
             <ProductContext.Provider value={
-                {...this.state, handleDetail: this.handleDetail, addToCart: this.addToCart, 
+                {...this.state, handleDetail: this.handleDetail, addToCart: this.addToCart, clearCart: this.clearCart,
                     removeFromCart: this.removeFromCart, increment: this.increment, decrement: this.decrement}
                 }>
                 {this.props.children}
