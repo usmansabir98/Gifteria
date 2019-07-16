@@ -15,10 +15,16 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::all();
+       
        // return $orders ->toJson();
+       if($request->input('user')!=NULL) {
+            $orders = Order::where('user_id',$request->input('user'))->get();
+       }
+       else {
+            $orders = Order::all();
+       }
        $ORDERS = [];    
 
        
@@ -135,7 +141,7 @@ class OrderController extends Controller
     //      ]);
 
     $order = Order::create([
-        'user_id' => '1',
+        'user_id' => $request->input('user'),
         'date_of_order' => $request->input('date_of_order'),
         'expected_delivery_date' => $request->input('expected_delivery_date'),
         'total_cost'=> '600',
@@ -285,7 +291,7 @@ class OrderController extends Controller
     
 
         $order = Order::find($id)->update([
-            'user_id' => '1',
+            'user_id' => $request->input('user_id'),
             'date_of_order' => $request->input('date_of_order'),
             'expected_delivery_date' => $request->input('expected_delivery_date'),
             'total_cost'=> '600',
