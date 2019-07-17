@@ -168,7 +168,7 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    console.log("component did mount");
+    // console.log("component did mount");
     let state = localStorage["appState"];
     if (state) {
       let AppState = JSON.parse(state);
@@ -178,7 +178,7 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.state.isLoggedIn);
+    // console.log(this.state.isLoggedIn);
     console.log("path name: " + this.props.location.pathname);
     if (
       !this.state.isLoggedIn &&
@@ -188,7 +188,7 @@ class App extends React.Component {
       console.log(
         "you are not loggedin and are not visiting login or register, so go to login page"
       );
-      // this.props.history.push("/login");
+      // this.props.history.push("/user");
     }
     if (
       this.state.isLoggedIn &&
@@ -204,17 +204,18 @@ class App extends React.Component {
     return (
       <Switch data="data">
         <div id="main">
-          <Route
+          {/* <Route
             exact
             path="/"
-            render={props => (
-              <Home
-                {...props}
-                logoutUser={this._logoutUser}
-                user={this.state.user}
-              />
-            )}
-          />
+            // render={props => (
+            //   <User
+            //     {...props}
+            //     logoutUser={this._logoutUser}
+            //     user={this.state.user}
+            //   />
+            // )}
+          ><Redirect from="/" to="/user/home" /></Route> */}
+          <Route exact path="/" render={() => <Redirect to="/user/home" />} />
 
           <Route
             path="/login"
@@ -229,7 +230,9 @@ class App extends React.Component {
           />
 
           <Route path="/admin" render={props => <AdminLayout {...props} />} />
-          <Route path="/user" render={props => <User {...props} />} />
+          <Route path="/user" render={props => <User {...props } logoutUser={this._logoutUser}
+                user={this.state.user} loginUser={this._loginUser} />} />
+          {/* <Redirect from="/" to="/user/home" /> */}
         </div>
       </Switch>
     );

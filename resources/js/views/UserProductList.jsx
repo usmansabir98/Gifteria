@@ -5,6 +5,7 @@ import {ProductConsumer} from '../context';
 
 class UserProductList extends Component {
     render() {
+        console.log(this.props.user);
         return (
             <div>
                 <h3>Product List</h3>

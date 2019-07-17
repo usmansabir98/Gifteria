@@ -160,6 +160,7 @@ class User extends Component {
     }
   }
   render() {
+    // console.log(this.props);
     return (
       <div className="wrapper">
         <NotificationSystem ref="notificationSystem" style={style} />

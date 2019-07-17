@@ -28,6 +28,7 @@ class Header extends Component {
     document.body.appendChild(node);
   }
   render() {
+    // console.log(this.props);
     return (
       <Navbar fluid>
         <Navbar.Header>
@@ -37,7 +38,7 @@ class Header extends Component {
           <Navbar.Toggle onClick={this.mobileSidebarToggle} />
         </Navbar.Header>
         <Navbar.Collapse>
-          <AdminNavbarLinks />
+          <AdminNavbarLinks {...this.props}/>
         </Navbar.Collapse>
       </Navbar>
     );

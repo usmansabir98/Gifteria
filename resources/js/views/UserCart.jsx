@@ -16,7 +16,7 @@ class UserCart extends Component {
                             btn = <button className="btn btn-danger" onClick={()=>value.clearCart()}>Clear Cart</button>
                         }
                         if(value.cart.length!=0){
-                            paypal = <Paypal total={value.cartTotal} history={this.props.history} clearCart={value.clearCart}/>
+                            paypal = <Paypal total={value.cartTotal} history={this.props.history} clearCart={value.clearCart} cart={value.cart}/>
                         }
                         return <div className="container">
                             

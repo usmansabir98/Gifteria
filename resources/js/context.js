@@ -60,11 +60,11 @@ class ProductProvider extends Component {
     }
 
     handleDetail(){
-        console.log("hello from handle detail");
+        // console.log("hello from handle detail");
     }
 
     removeFromCart(id){
-        console.log("hello from remove from cart: ", id);
+        // console.log("hello from remove from cart: ", id);
 
         var cart = this.state.cart.filter(x => {
             return x.id != id;
@@ -88,7 +88,7 @@ class ProductProvider extends Component {
     }
     
     addToCart(id){
-        console.log("hello from add to cart: ", id);
+        // console.log("hello from add to cart: ", id);
         // let product = this.state.products.find(item => item.id === id);
         let cart = [...this.state.cart];
         // cart.push(product);

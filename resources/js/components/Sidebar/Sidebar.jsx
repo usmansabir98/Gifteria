@@ -24,10 +24,12 @@ class Sidebar extends Component {
     window.addEventListener("resize", this.updateDimensions.bind(this));
   }
   render() {
-    console.log(this.props.match.path);
     const sidebarBackground = {
       backgroundImage: "url(" + this.props.image + ")"
     };
+    
+    let appState = JSON.parse(localStorage['appState']);
+
     return (
       <div
         id="sidebar"
@@ -61,6 +63,7 @@ class Sidebar extends Component {
             {this.state.width <= 991 ? <AdminNavbarLinks /> : null}
             {this.props.routes.map((prop, key) => {
               if(prop.invisible) return null;
+              if(prop.auth && !appState.isLoggedIn) return null;
               if (!prop.redirect && this.props.match.path==prop.layout)
                 return (
                   <li

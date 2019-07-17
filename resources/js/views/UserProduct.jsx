@@ -25,10 +25,16 @@ class UserProduct extends Component {
                     <ProductConsumer>
                         {
                             (value) => {
-                                return <button className="btn cart-btn btn-block btn-primary" disabled={inCart?true:false}
+                                let appState = JSON.parse((localStorage['appState']));
+                                if(appState.isLoggedIn){
+                                    return <button className="btn cart-btn btn-block btn-primary" disabled={inCart?true:false}
                                 onClick={()=>value.addToCart(id)}>
                                     {inCart?<span>Added</span>:<span>Add to Cart</span>}
                                 </button>
+                                }
+
+                                return null;
+                                
                             }
                         }
                     </ProductConsumer>

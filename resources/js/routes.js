@@ -24,10 +24,12 @@ import ProductCategory from "./views/ProductCategory.jsx";
 import ProductCategoryCreate from "./views/ProductCategoryCreate.jsx";
 import Inventory from "./views/Inventory.jsx";
 import InventoryCreate from "./views/InventoryCreate.jsx";
-
+import Orders from "./views/Orders.jsx";
+import Order from "./views/Order.jsx";
 
 import UserHome from "./views/UserHome.jsx";
 import UserCart from "./views/UserCart.jsx";
+import UserOrders from "./views/UserOrders.jsx";
 import UserProductDetails from "./views/UserProductDetails.jsx";
 
 
@@ -87,6 +89,23 @@ const dashboardRoutes = [
     icon: "pe-7s-note2",
     component: ProductCategories,
     layout: "/admin"
+  },
+
+  {
+    path: "/orders",
+    name: "Orders",
+    icon: "pe-7s-note",
+    component: Orders,
+    layout: "/admin"
+  },
+
+  {
+    path: "/order/:id",
+    name: "Orders",
+    icon: "pe-7s-note",
+    component: Order,
+    layout: "/admin",
+    invisible: true
   },
 
   {
@@ -181,6 +200,15 @@ const dashboardRoutes = [
     icon: "pe-7s-cart",
     component: UserCart,
     layout: "/user"
+  },
+
+  {
+    path: "/orders",
+    name: "Orders",
+    icon: "pe-7s-note",
+    component: UserOrders,
+    layout: "/user",
+    auth: true
   },
 
   {

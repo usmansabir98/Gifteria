@@ -11,6 +11,34 @@ class AdminNavbarLinks extends Component {
         <p className="hidden-lg hidden-md">Notification</p>
       </div>
     );
+
+    // console.log(this.props);
+    let navbar = null;
+    let appState = JSON.parse(localStorage['appState']);
+    if(appState.isLoggedIn){
+      
+      navbar = <NavDropdown
+          eventKey={2}
+          title="Account"
+          id="basic-nav-dropdown-right"
+        >
+          <MenuItem eventKey={2.1}>{appState.user.name}</MenuItem>
+          {/* <MenuItem eventKey={2.2}>Another action</MenuItem>
+          <MenuItem eventKey={2.3}>Something</MenuItem>
+          <MenuItem eventKey={2.4}>Another action</MenuItem>
+          <MenuItem eventKey={2.5}>Something</MenuItem> */}
+          <MenuItem divider />
+          <MenuItem eventKey={2.5} onClick={()=>{
+            this.props.logoutUser();
+            this.props.history.push('/user/home');
+          }}>Log Out</MenuItem>
+        </NavDropdown>
+    }
+    else{
+      navbar = <NavItem eventKey={3} onClick={()=>this.props.history.push('/login')}>
+            Log In
+          </NavItem>
+    }
     return (
       <div>
         <Nav>
@@ -36,25 +64,11 @@ class AdminNavbarLinks extends Component {
           </NavItem>
         </Nav>
         <Nav pullRight>
-          <NavItem eventKey={1} href="#">
+          {/* <NavItem eventKey={1} href="#">
             Account
-          </NavItem>
-          <NavDropdown
-            eventKey={2}
-            title="Dropdown"
-            id="basic-nav-dropdown-right"
-          >
-            <MenuItem eventKey={2.1}>Action</MenuItem>
-            <MenuItem eventKey={2.2}>Another action</MenuItem>
-            <MenuItem eventKey={2.3}>Something</MenuItem>
-            <MenuItem eventKey={2.4}>Another action</MenuItem>
-            <MenuItem eventKey={2.5}>Something</MenuItem>
-            <MenuItem divider />
-            <MenuItem eventKey={2.5}>Separated link</MenuItem>
-          </NavDropdown>
-          <NavItem eventKey={3} href="#">
-            Log out
-          </NavItem>
+          </NavItem> */}
+          {navbar}
+          
         </Nav>
       </div>
     );

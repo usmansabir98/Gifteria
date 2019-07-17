@@ -1,13 +1,44 @@
 import React from 'react';
 import PaypalExpressBtn from 'react-paypal-express-checkout';
 
+import axios from 'axios';
+
 export default class MyApp extends React.Component {
     render() {
 		const onSuccess = (payment) => {
 			// 1, 2, and ... Poof! You made it, everything's fine and dandy!
-                    console.log("Payment successful!", payment);
-                    this.props.clearCart();
-                    this.props.history.push('/user/home');
+					console.log("Payment successful!", payment);
+
+					let address = `${payment.address.line1}, ${payment.address.city}, ${payment.address.state}.`;
+					let postal = payment.address.postal_code;
+					let total = this.props.total;
+					let cart = JSON.parse(localStorage['cart']);
+					let user = JSON.parse(localStorage['appState']);
+					user = user.user.id;
+
+					let inventories = cart.map(item=>{
+						return {id: item.id, count: item.count, total: item.total};
+					});
+					
+					let order = {
+						address: address,
+						postal: postal,
+						total: total,
+						user: user,
+						inventories: inventories
+					};
+
+					console.log(order);
+
+					axios.post(`/api/orders/`, order)
+						.then(response=>{
+							console.log(response);
+							this.props.clearCart();
+		                    this.props.history.push('/user/orders');
+						});
+
+                    // this.props.clearCart();
+                    // this.props.history.push('/user/home');
             		// You can bind the "payment" object's value to your state or props or whatever here, please see below for sample returned data
 		}
 

@@ -17,21 +17,21 @@ export default class Home extends React.Component {
   }
 
   componentDidMount() {
-    axios
-      .get(`http://localhost:8000/api/users/list?token=${this.state.token}`)
-      .then(response => {
-        console.log(response);
-        return response;
-      })
-      .then(json => {
-        if (json.data.success) {
-          this.setState({ users: json.data.data });
-          //alert("Login Successful!");
-        } else alert("Login Failed!");
-      })
-      .catch(error => {
-        alert(`An Error Occured! ${error}`);
-      });
+    // axios
+    //   .get(`http://localhost:8000/api/users/list?token=${this.state.token}`)
+    //   .then(response => {
+    //     console.log(response);
+    //     return response;
+    //   })
+    //   .then(json => {
+    //     if (json.data.success) {
+    //       this.setState({ users: json.data.data });
+    //       //alert("Login Successful!");
+    //     } else alert("Login Failed!");
+    //   })
+    //   .catch(error => {
+    //     alert(`An Error Occured! ${error}`);
+    //   });
   }
 
   render() {

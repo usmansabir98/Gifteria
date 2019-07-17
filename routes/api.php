@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,3 +72,8 @@ Route::resource('orders', 'OrderController');
 Route::get('orders/{id}/delete', 'OrderController@destroy');
 Route::resource('orderstatus', 'OrderStatusController');
 Route::get('orderstatus/{id}/delete', 'OrderStatusController@destroy');
+
+Route::get('sampleuser', function(){
+    $user = Auth::id();
+    dd($user);
+});
